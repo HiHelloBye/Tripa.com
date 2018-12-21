@@ -1,0 +1,158 @@
+﻿div.board-box {
+	width: 1100px;
+	height: 800px;
+    float: left;
+	overflow: auto;
+	margin-top: 30px;
+    margin-left: 10px;
+	position: absolute;
+}
+
+div.gallery {
+	box-sizing: content-box;
+	float: left;
+	width: 230px;
+	height: 290px;
+	margin: 10px;
+	margin-top: 10px;
+	margin-left: 10px;
+	padding: 10px;
+	border: 1px solid #404040;
+	overflow: auto;
+}
+
+div.block {
+	overflow: auto;    
+    display: block;
+    float: left;
+	position: absolute;
+	margin: auto;
+	/* display: inline-block; */
+	bottom:0px;
+}
+
+div.searchResult {
+	text-align:center;
+}
+aside#left {
+    position: relative;
+	width: 250px;
+	height: 300px;
+	display: inline-block;
+	overflow: auto;
+    background-color: gray;
+    margin-right: 5px;
+    float:left;
+}
+#category {
+    margin-top: 60px;
+}
+
+#left {
+	width: 200px;
+	height: 700px;
+	background-color: cadetblue;
+	float: left;
+	margin: 5px;
+}
+
+
+/* 글쓰기 css */
+#topBar {
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+aside#right {
+	display: inline;
+	position: relative;
+	float: right;
+}
+
+#writeTool {
+	margin-bottom: 20px;
+}
+
+#writeLibrary{
+	margin-top: 5px;
+}
+
+.writeForm {
+	margin: auto;
+	box-sizing: content-box;
+	/* 임시지정 */
+	background-color: rgb(201, 233, 223);
+	width: 80%;
+	height: 1050px;
+	margin-top: 5px;
+	/* padding-left: 40px; */
+	margin-left: 30px;
+	overflow: auto;
+	position: absolute;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.writeTitle {
+	position: relative;
+    /* background-image: url(./img/img1.jpg);                                                                */
+    height: 50vh;
+	background-size: cover;
+}
+
+.writeTitle .writeTitleContent{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);                                                                   
+	font-size:5rem;
+	background-color: rgb(226, 193, 193);
+	color: white;
+	z-index: 2;
+	text-align: center;
+}
+
+.titleImg_cover {
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left:10%;
+	height: 80%;
+	width: 80%;
+	background-color: rgba(0, 0, 0, 0.4);                                                                 
+	z-index:1;
+}
+
+.writeContent {
+	position: relative;
+	padding-bottom: 30px;
+	padding-left: 200px;
+	width:100%;
+	overflow-y: auto;
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	display: inline-block;	
+}
+
+.noresize {
+	left:50%;
+	min-width: 500px;
+	min-height: 500px;
+	resize: none; 		/* 사용자 임의 변경 불가 	*/
+	resize: both; 		/* 사용자 변경이 모두 가능	*/
+	resize: horizontal; /* 좌우만 가능 			   */
+	resize: vertical; 	/* 상하만 가능 			   */
+	font-size:2rem;
+
+}
+.writeHashtag {
+	background-color: rgb(117, 189, 199);
+	text-align: left;
+	margin-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size:2rem;
+	
+}

@@ -1,0 +1,1506 @@
+﻿DROP TABLE ACCOM_COM;
+DROP TABLE ACPHOTO;
+DROP TABLE APHOTO;
+DROP TABLE BOARD_COM;
+DROP TABLE BPHOTO;
+DROP TABLE COMMON;
+DROP TABLE HASHTAG;
+DROP TABLE RESERVATION;
+DROP TABLE SCRAP;
+DROP TABLE MEMBER;
+DROP TABLE BOARD;
+DROP TABLE ACCOM_INFO;
+DROP TABLE ACCOM;
+
+
+/* 숙소 */
+CREATE TABLE J20180902.ACCOM (
+	ACCOM_NO NUMBER(5) NOT NULL, /* 숙소번호 */
+	ACCOM_NAME VARCHAR2(50) NOT NULL, /* 숙소명 */
+	ACCOM_TYPE VARCHAR2(2), /* 종류  */
+	ACCOM_ADDR VARCHAR2(100), /* 주소  */
+	ACCOM_FUNC  VARCHAR2(500), /* 지원기능 */
+	ACCOM_MAP  VARCHAR2(200), /* 지도  */
+	ACCOM_CONT VARCHAR2(2000), /* 내용  */
+	ACCOM_RAT NUMBER(4,1), /* 별점 */
+	INOUT VARCHAR2(2), /* 국내외 */
+	AREA VARCHAR2(2), /* 지역 */
+	ACCOM_PHOTO VARCHAR2(500) /* 외관사진 */
+);
+
+CREATE UNIQUE INDEX J20180902.PK_ACCOM
+	ON J20180902.ACCOM (
+		ACCOM_NO ASC
+	);
+
+ALTER TABLE J20180902.ACCOM
+	ADD
+		CONSTRAINT PK_ACCOM
+		PRIMARY KEY (
+			ACCOM_NO
+		);
+
+COMMENT ON TABLE J20180902.ACCOM IS '숙소';  
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_NO IS '숙소번호';   
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_NAME IS '숙소명';  
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_TYPE IS '종류 ';   
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_ADDR IS '주소 ';  
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_FUNC  IS '지원기능';   
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_MAP  IS '지도 ';  
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_CONT IS '내용 ';   
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_RAT IS '별점';  
+
+COMMENT ON COLUMN J20180902.ACCOM.INOUT IS '국내외';   
+
+COMMENT ON COLUMN J20180902.ACCOM.AREA IS '지역';  
+
+COMMENT ON COLUMN J20180902.ACCOM.ACCOM_PHOTO IS '외관사진';
+
+/* 객실정보 */
+CREATE TABLE J20180902.ACCOM_INFO ( 
+	ACCOM_NO NUMBER(5) NOT NULL, /* 숙소번호 */
+	ROOM_NO  VARCHAR2(30) NOT NULL, /* 방종류 */
+	NUM_PEOPLE  NUMBER(5), /* 인원 */
+	IN_DATE  VARCHAR2(8), /* 체크인  */
+	OUT_DATE  VARCHAR2(8), /* 체크아웃  */
+	PRICE  NUMBER(10), /* 가격  */
+	RES_STAT  VARCHAR2(20),/* 예약상태  */
+	NUM NUMBER(5) /* 사진 번호 */
+  
+);
+
+CREATE UNIQUE INDEX J20180902.PK_ACCOM_INFO
+	ON J20180902.ACCOM_INFO (
+		ACCOM_NO ASC,
+		ROOM_NO  ASC
+	);
+
+ALTER TABLE J20180902.ACCOM_INFO
+	ADD
+		CONSTRAINT PK_ACCOM_INFO
+		PRIMARY KEY (
+			ACCOM_NO,
+			ROOM_NO 
+		);
+
+COMMENT ON TABLE J20180902.ACCOM_INFO IS '객실정보';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.ACCOM_NO IS '숙소번호';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.ROOM_NO  IS '방종류';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.NUM_PEOPLE  IS '인원';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.IN_DATE  IS '체크인 ';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.OUT_DATE  IS '체크아웃 ';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.PRICE  IS '가격 ';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.RES_STAT  IS '예약상태 ';
+
+COMMENT ON COLUMN J20180902.ACCOM_INFO.NUM IS '사진번호';
+
+--예약테이블
+/* 예약 */
+CREATE TABLE J20180902.RESERVATION (
+	ACCOM_NO NUMBER(5) NOT NULL, /* 숙소번호 */
+	ROOM_NO  VARCHAR2(30) NOT NULL, /* 방종류 */
+	RESER_NO NUMBER(5) NOT NULL, /* 예약번호  */
+	OUT_DATE  VARCHAR2(8) NOT NULL, /* 체크아웃  */
+	IN_DATE  VARCHAR2(8), /* 체크인  */
+	USER_EMAIL  VARCHAR2(30), /* 이메일  */
+	RES_CONT  VARCHAR2(500), /* 내용  */
+	USER_ID  VARCHAR2(30) NOT NULL, /* 아이디  */
+	RES_NAME  VARCHAR2(20), /* 예약자  */
+	USER_CELL  VARCHAR2(20), /* 연락처  */
+	RSAVING_PNT NUMBER(5), /* 사용 적립금  */
+  FLAG NUMBER(5)    /*후기작성여부*/
+);
+
+CREATE UNIQUE INDEX J20180902.PK_RESERVATION
+	ON J20180902.RESERVATION (
+		ACCOM_NO ASC,
+		ROOM_NO  ASC,
+		RESER_NO ASC
+	);
+
+ALTER TABLE J20180902.RESERVATION
+	ADD
+		CONSTRAINT PK_RESERVATION
+		PRIMARY KEY (
+			ACCOM_NO,
+			ROOM_NO ,
+			RESER_NO
+		);
+
+COMMENT ON TABLE J20180902.RESERVATION IS '예약';
+
+COMMENT ON COLUMN J20180902.RESERVATION.ACCOM_NO IS '숙소번호';
+
+COMMENT ON COLUMN J20180902.RESERVATION.ROOM_NO  IS '방종류';
+
+COMMENT ON COLUMN J20180902.RESERVATION.RESER_NO IS '예약번호 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.OUT_DATE  IS '체크아웃 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.IN_DATE  IS '체크인 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.USER_EMAIL  IS '이메일 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.RES_CONT  IS '내용 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.USER_ID  IS '아이디 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.RES_NAME  IS '예약자 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.USER_CELL  IS '연락처 ';
+
+COMMENT ON COLUMN J20180902.RESERVATION.RSAVING_PNT IS '사용 적립금';
+
+COMMENT ON COLUMN J20180902.RESERVATION.FLAG IS '후기작성여부';
+
+/* 숙소 후기 */
+CREATE TABLE J20180902.ACCOM_COM (
+	ACCOM_NO NUMBER(5) NOT NULL, /* 숙소번호 */
+	USER_ID  VARCHAR2(30) NOT NULL, /* 아이디  */
+	REVIEW_CONT  VARCHAR2(500), /* 내용  */
+	ACCOM_RAT  NUMBER(4,1), /* 별점  */
+	SAVING_PNT  NUMBER(5), /* 적립금 */
+  COM_NO NUMBER(5) NOT NULL /* 숙소 후기 번호*/
+);
+
+CREATE UNIQUE INDEX J20180902.PK_ACCOM_COM
+	ON J20180902.ACCOM_COM (
+		ACCOM_NO ASC,
+		USER_ID  ASC,
+    COM_NO ASC
+	);
+
+ALTER TABLE J20180902.ACCOM_COM
+	ADD
+		CONSTRAINT PK_ACCOM_COM
+		PRIMARY KEY (
+			ACCOM_NO,
+			USER_ID ,
+      COM_NO
+		);
+
+COMMENT ON TABLE J20180902.ACCOM_COM IS '숙소 후기';
+
+COMMENT ON COLUMN J20180902.ACCOM_COM.ACCOM_NO IS '숙소번호';
+
+COMMENT ON COLUMN J20180902.ACCOM_COM.USER_ID  IS '아이디 ';
+
+COMMENT ON COLUMN J20180902.ACCOM_COM.REVIEW_CONT  IS '내용 ';
+
+COMMENT ON COLUMN J20180902.ACCOM_COM.ACCOM_RAT  IS '별점 ';
+
+COMMENT ON COLUMN J20180902.ACCOM_COM.SAVING_PNT  IS '적립금';
+
+COMMENT ON COLUMN J20180902.ACCOM_COM.COM_NO IS '숙소후기번호';
+
+/* 게시판 */
+CREATE TABLE J20180902.BOARD (
+	POSTING_NO  NUMBER(5) NOT NULL, /* 게시글 번호 */
+	BOARD_TITLE  VARCHAR2(50), /* 게시글 제목 */
+	REGI_DATE  VARCHAR2(8), /* 등록일  */
+	SAVING_PNT  NUMBER(5), /* 적립금 */
+	CONTENT_TEXT  CLOB, /* 내용  */
+	USER_ID VARCHAR2(30), /* 아이디 */
+	LOOK NUMBER(5), /* 조회수 */
+  SCRAP_CNT NUMBER(5), /*스크랩 수*/
+	INOUT VARCHAR2(2), /* 국내외 */
+	AREA VARCHAR2(2), /* 지역 */
+  START_DATE VARCHAR2(8), /*여행시작날짜*/
+  END_DATE VARCHAR2(8) /*여행끝날짜*/
+);
+
+CREATE UNIQUE INDEX J20180902.PK_BOARD
+	ON J20180902.BOARD (
+		POSTING_NO  ASC
+	);
+
+ALTER TABLE J20180902.BOARD
+	ADD
+		CONSTRAINT PK_BOARD
+		PRIMARY KEY (
+			POSTING_NO 
+		);
+
+COMMENT ON TABLE J20180902.BOARD IS '게시판';
+
+COMMENT ON COLUMN J20180902.BOARD.POSTING_NO  IS '게시글 번호';
+
+COMMENT ON COLUMN J20180902.BOARD.BOARD_TITLE  IS '게시글 제목';
+
+COMMENT ON COLUMN J20180902.BOARD.REGI_DATE  IS '등록일 ';
+
+COMMENT ON COLUMN J20180902.BOARD.SAVING_PNT  IS '적립금';
+
+COMMENT ON COLUMN J20180902.BOARD.CONTENT_TEXT  IS '내용 ';
+
+COMMENT ON COLUMN J20180902.BOARD.USER_ID IS '아이디';
+
+COMMENT ON COLUMN J20180902.BOARD.LOOK IS '조회수';
+
+COMMENT ON COLUMN J20180902.BOARD.SCRAP_CNT IS '스크랩수';  
+
+COMMENT ON COLUMN J20180902.BOARD.INOUT IS '국내외';  
+
+COMMENT ON COLUMN J20180902.BOARD.AREA IS '지역'; 
+
+COMMENT ON COLUMN J20180902.BOARD.START_DATE IS '여행시작날짜';  
+
+COMMENT ON COLUMN J20180902.BOARD.END_DATE IS '여행끝날짜';  
+
+/* 게시판 댓글 */
+CREATE TABLE J20180902.BOARD_COM (
+	COMM_NO  NUMBER(5) NOT NULL, /* 댓글 번호 */
+	POSTING_NO  NUMBER(5) NOT NULL, /* 게시글 번호 */
+	USER_ID  VARCHAR2(30) NOT NULL, /* 작성자  */
+	COMMENTS  VARCHAR2(100), /* 댓글내용 */
+	SAVING_PNT  NUMBER(5), /* 적립금 */
+	REGI_DATE  VARCHAR2(8), /* 등록일  */
+	RE_LEVEL NUMBER(5), /* 댓글레벨 */
+	RE_STEP NUMBER(5), /* 댓글순서 */
+	REF NUMBER(5) /* 댓글그룹 */
+);
+
+CREATE UNIQUE INDEX J20180902.PK_BOARD_COM
+	ON J20180902.BOARD_COM (
+		COMM_NO  ASC,
+		POSTING_NO  ASC
+	);
+
+ALTER TABLE J20180902.BOARD_COM
+	ADD
+		CONSTRAINT PK_BOARD_COM
+		PRIMARY KEY (
+			COMM_NO ,
+			POSTING_NO 
+		);
+
+COMMENT ON TABLE J20180902.BOARD_COM IS '게시판 댓글';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.COMM_NO  IS '댓글 번호';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.POSTING_NO  IS '게시글 번호';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.USER_ID  IS '작성자 ';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.COMMENTS  IS '댓글내용';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.SAVING_PNT  IS '적립금';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.REGI_DATE  IS '등록일 ';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.RE_LEVEL IS '댓글레벨';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.RE_STEP IS '댓글순서';
+
+COMMENT ON COLUMN J20180902.BOARD_COM.REF IS '댓글그룹';
+
+/* 회원 */
+CREATE TABLE J20180902.MEMBER (
+	USER_ID  VARCHAR2(30) NOT NULL, /* 아이디  */
+	USER_PASS  VARCHAR2(30), /* 비밀번호  */
+	USER_NAME  VARCHAR2(10), /* 이름  */
+	USER_GEN  VARCHAR2(10), /* 성별  */
+	USER_EMAIL  VARCHAR2(30), /* 이메일  */
+    USER_QUESTION VARCHAR2(60), /* 질문 */
+    USER_ANSWER VARCHAR2(60), /* 답변 */
+    USER_CELL VARCHAR2(20), /* 연락처 */
+	TIME  DATE, /* 회원 접속시간 */
+	SAVING_PNT  NUMBER(5) /* 적립금 */
+);
+
+CREATE UNIQUE INDEX J20180902.PK_MEMBER
+	ON J20180902.MEMBER (
+		USER_ID  ASC
+	);
+
+ALTER TABLE J20180902.MEMBER
+	ADD
+		CONSTRAINT PK_MEMBER
+		PRIMARY KEY (
+			USER_ID 
+		);
+
+COMMENT ON TABLE J20180902.MEMBER IS '회원';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_ID  IS '아이디 ';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_PASS  IS '비밀번호 ';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_NAME  IS '이름 ';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_GEN  IS '성별 ';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_EMAIL  IS '이메일 ';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_QUESTION IS '질문';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_ANSWER IS '답변';
+
+COMMENT ON COLUMN J20180902.MEMBER.USER_CELL IS '연락처';
+
+COMMENT ON COLUMN J20180902.MEMBER.TIME  IS '회원 접속시간';
+
+COMMENT ON COLUMN J20180902.MEMBER.SAVING_PNT  IS '적립금';
+
+
+/* 공통테이블 */
+CREATE TABLE J20180902.COMMON (
+	BCD VARCHAR2(2) NOT NULL, /* 대분류코드 */
+	MCD VARCHAR2(2) NOT NULL, /* 중분류코드 */
+	BMN VARCHAR2(200), /* 대분류이름 */
+	MNM VARCHAR2(200) /* 중분류이름 */
+);
+
+
+
+
+/* 게시판사진 */
+CREATE TABLE J20180902.BPHOTO (
+	POSTING_NO  NUMBER(5) NOT NULL, /* 게시글 번호 */
+	PHO_NO NUMBER(5) NOT NULL, /* 사진일련번호 */
+	PHOTO VARCHAR2(500) /* 사진 */
+);
+
+CREATE UNIQUE INDEX J20180902.PK_BPHOTO
+	ON J20180902.BPHOTO (
+		POSTING_NO  ASC,
+		PHO_NO ASC
+	);
+
+ALTER TABLE J20180902.BPHOTO
+	ADD
+		CONSTRAINT PK_BPHOTO
+		PRIMARY KEY (
+			POSTING_NO ,
+			PHO_NO
+		);
+
+COMMENT ON TABLE J20180902.BPHOTO IS '게시판사진';
+
+COMMENT ON COLUMN J20180902.BPHOTO.POSTING_NO  IS '게시글 번호';
+
+COMMENT ON COLUMN J20180902.BPHOTO.PHO_NO IS '사진일련번호';
+
+COMMENT ON COLUMN J20180902.BPHOTO.PHOTO IS '사진';
+
+/* 해시태그 */
+CREATE TABLE J20180902.HASHTAG (
+	POSTING_NO  NUMBER(5) NOT NULL, /* 게시글 번호 */
+	HASH_NO NUMBER(5) NOT NULL, /* 해시일련번호 */
+	HASHTAG VARCHAR2(50) /* 해시태그 */
+);
+
+CREATE UNIQUE INDEX J20180902.PK_HASHTAG
+	ON J20180902.HASHTAG (
+		POSTING_NO  ASC,
+		HASH_NO ASC
+	);
+
+ALTER TABLE J20180902.HASHTAG
+	ADD
+		CONSTRAINT PK_HASHTAG
+		PRIMARY KEY (
+			POSTING_NO ,
+			HASH_NO
+		);
+
+COMMENT ON TABLE J20180902.HASHTAG IS '해시태그';
+
+COMMENT ON COLUMN J20180902.HASHTAG.POSTING_NO  IS '게시글 번호';
+
+COMMENT ON COLUMN J20180902.HASHTAG.HASH_NO IS '해시일련번호';
+
+COMMENT ON COLUMN J20180902.HASHTAG.HASHTAG IS '해시태그';
+
+/* 스크랩 */
+CREATE TABLE J20180902.SCRAP (
+   USER_ID  VARCHAR2(30) NOT NULL, /* 아이디  */
+   SCRAP_CD VARCHAR2(2) NOT NULL,  /* 스크랩구분 */
+   SCRAP_NO NUMBER(5) NOT NULL,    /* 스크랩번호 */
+     POSTING_NO NUMBER(5),    /* 게시글 번호 */  
+   LIKE_CHECK NUMBER(5) NOT NULL,  /*좋아요체크확인*/
+   ACCOM_NO NUMBER(5) /*숙소번호*/
+);
+
+CREATE UNIQUE INDEX J20180902.PK_SCRAP
+   ON J20180902.SCRAP (
+      USER_ID  ASC,
+SCRAP_CD,
+      SCRAP_NO
+   );
+
+ALTER TABLE J20180902.SCRAP
+   ADD
+      CONSTRAINT PK_SCRAP
+      PRIMARY KEY (
+         USER_ID ,
+            SCRAP_CD,
+            SCRAP_NO
+      );
+
+COMMENT ON TABLE J20180902.SCRAP IS '스크랩';
+
+COMMENT ON COLUMN J20180902.SCRAP.USER_ID  IS '아이디 ';
+
+COMMENT ON COLUMN J20180902.SCRAP.SCRAP_CD IS '스크랩구분';
+
+COMMENT ON COLUMN J20180902.SCRAP.SCRAP_NO IS '스크랩번호';
+
+COMMENT ON COLUMN J20180902.SCRAP.POSTING_NO IS '게시글번호';  
+
+COMMENT ON COLUMN J20180902.SCRAP.LIKE_CHECK  IS '좋아요체크확인';  
+
+COMMENT ON COLUMN J20180902.SCRAP.ACCOM_NO   IS '숙소번호';  
+
+/* 숙소사진 */
+CREATE TABLE J20180902.APHOTO (
+	ACCOM_NO NUMBER(5) NOT NULL, /* 숙소번호 */
+	PHO_NO NUMBER(5) NOT NULL, /* 사진일련번호 */
+	PHOTO VARCHAR2(500) /* 사진 */
+);
+
+CREATE UNIQUE INDEX J20180902.PK_APHOTO
+	ON J20180902.APHOTO (
+		ACCOM_NO ASC,
+		PHO_NO ASC
+	);
+
+ALTER TABLE J20180902.APHOTO
+	ADD
+		CONSTRAINT PK_APHOTO
+		PRIMARY KEY (
+			ACCOM_NO,
+			PHO_NO
+		);
+
+COMMENT ON TABLE J20180902.APHOTO IS '숙소사진';
+
+COMMENT ON COLUMN J20180902.APHOTO.ACCOM_NO IS '숙소번호';
+
+COMMENT ON COLUMN J20180902.APHOTO.PHO_NO IS '사진일련번호';
+
+COMMENT ON COLUMN J20180902.APHOTO.PHOTO IS '사진';
+
+/* 숙소후기사진 */
+CREATE TABLE J20180902.ACPHOTO (
+	ACCOM_NO  NUMBER(5) NOT NULL, /*숙소번호  */
+	USER_ID VARCHAR2(30) NOT NULL, /* 아이디  */
+  COM_NO NUMBER(5) NOT NULL, /* 숙소후기번호  */
+	PHOTO VARCHAR2(500) NOT NULL /*  사진 */
+);
+
+
+COMMENT ON TABLE J20180902.ACPHOTO IS '숙소후기사진'; 
+
+COMMENT ON COLUMN J20180902.ACPHOTO.ACCOM_NO  IS '숙소번호'; 
+
+COMMENT ON COLUMN J20180902.ACPHOTO.USER_ID IS '아이디 '; 
+
+COMMENT ON COLUMN J20180902.ACPHOTO.COM_NO  IS '숙소후기번호'; 
+
+COMMENT ON COLUMN J20180902.ACPHOTO.PHOTO  IS '사진'; 
+
+
+    
+ALTER TABLE J20180902.ACCOM_INFO
+	ADD
+		CONSTRAINT FK_ACCOM_TO_ACCOM_INFO
+		FOREIGN KEY (
+			ACCOM_NO
+		)
+		REFERENCES J20180902.ACCOM (
+			ACCOM_NO
+		)on delete cascade;
+
+ALTER TABLE J20180902.RESERVATION
+	ADD
+		CONSTRAINT FK_ACCOM_INFO_TO_RESERVATION
+		FOREIGN KEY (
+			ACCOM_NO,
+			ROOM_NO 
+		)
+		REFERENCES J20180902.ACCOM_INFO (
+			ACCOM_NO,
+			ROOM_NO 
+		)on delete cascade;
+
+ALTER TABLE J20180902.ACCOM_COM
+	ADD
+		CONSTRAINT FK_ACCOM_TO_ACCOM_COM
+		FOREIGN KEY (
+			ACCOM_NO
+		)
+		REFERENCES J20180902.ACCOM (
+			ACCOM_NO
+		)on delete cascade;
+
+ALTER TABLE J20180902.ACCOM_COM
+	ADD
+		CONSTRAINT FK_MEMBER_TO_ACCOM_COM
+		FOREIGN KEY (
+			USER_ID 
+		)
+		REFERENCES J20180902.MEMBER (
+			USER_ID 
+		)on delete cascade;
+
+ALTER TABLE J20180902.BOARD_COM
+	ADD
+		CONSTRAINT FK_BOARD_TO_BOARD_COM
+		FOREIGN KEY (
+			POSTING_NO 
+		)
+		REFERENCES J20180902.BOARD (
+			POSTING_NO 
+		)on delete cascade;
+
+ALTER TABLE J20180902.BPHOTO
+	ADD
+		CONSTRAINT FK_BOARD_TO_BPHOTO
+		FOREIGN KEY (
+			POSTING_NO 
+		)
+		REFERENCES J20180902.BOARD (
+			POSTING_NO 
+		)on delete cascade;
+
+ALTER TABLE J20180902.HASHTAG
+	ADD
+		CONSTRAINT FK_BOARD_TO_HASHTAG
+		FOREIGN KEY (
+			POSTING_NO 
+		)
+		REFERENCES J20180902.BOARD (
+			POSTING_NO 
+		)on delete cascade;
+
+ALTER TABLE J20180902.SCRAP
+	ADD
+		CONSTRAINT FK_MEMBER_TO_SCRAP
+		FOREIGN KEY (
+			USER_ID 
+		)
+		REFERENCES J20180902.MEMBER (
+			USER_ID 
+		)on delete cascade;
+
+ALTER TABLE J20180902.APHOTO
+	ADD
+		CONSTRAINT FK_ACCOM_TO_APHOTO
+		FOREIGN KEY (
+			ACCOM_NO
+		)
+		REFERENCES J20180902.ACCOM (
+			ACCOM_NO
+		)on delete cascade;
+        
+        --공통테이블
+INSERT INTO COMMON VALUES ('K','01','국내','충청도');
+INSERT INTO COMMON VALUES ('K_','01','국내','천안');
+INSERT INTO COMMON VALUES ('K_','01','국내','제천');
+INSERT INTO COMMON VALUES ('K_','01','국내','충주');
+INSERT INTO COMMON VALUES ('K_','01','국내','아산');
+INSERT INTO COMMON VALUES ('K_','01','국내','보령');
+INSERT INTO COMMON VALUES ('K_','01','국내','청주');
+INSERT INTO COMMON VALUES ('K_','01','국내','서산');
+
+INSERT INTO COMMON VALUES ('K','02','국내','전라도');
+INSERT INTO COMMON VALUES ('K_','02','국내','전북');
+INSERT INTO COMMON VALUES ('K_','02','국내','전남');
+INSERT INTO COMMON VALUES ('K_','02','국내','광주');
+INSERT INTO COMMON VALUES ('K_','02','국내','나주');
+INSERT INTO COMMON VALUES ('K_','02','국내','전주');
+
+INSERT INTO COMMON VALUES ('K','03','국내','경상도');
+INSERT INTO COMMON VALUES ('K_','03','국내','경남');
+INSERT INTO COMMON VALUES ('K_','03','국내','경북');
+INSERT INTO COMMON VALUES ('K_','03','국내','대구');
+INSERT INTO COMMON VALUES ('K_','03','국내','울산');
+INSERT INTO COMMON VALUES ('K_','03','국내','부산');
+
+INSERT INTO COMMON VALUES ('K','04','국내','제주도');
+INSERT INTO COMMON VALUES ('K_','04','국내','제주');
+INSERT INTO COMMON VALUES ('K_','04','국내','서귀포');
+
+INSERT INTO COMMON VALUES ('K','05','국내','강원도');
+INSERT INTO COMMON VALUES ('K_','05','국내','춘천');
+INSERT INTO COMMON VALUES ('K_','05','국내','원주');
+INSERT INTO COMMON VALUES ('K_','05','국내','강릉');
+
+INSERT INTO COMMON VALUES ('F','01','국외','일본');
+INSERT INTO COMMON VALUES ('F_','01','국외','오사카');
+INSERT INTO COMMON VALUES ('F_','01','국외','고베');
+INSERT INTO COMMON VALUES ('F_','01','국외','교토');
+INSERT INTO COMMON VALUES ('F_','01','국외','도쿄');
+INSERT INTO COMMON VALUES ('F_','01','국외','삿포로');
+INSERT INTO COMMON VALUES ('F_','01','국외','후쿠오카');
+INSERT INTO COMMON VALUES ('F_','01','국외','오키나와');
+INSERT INTO COMMON VALUES ('F_','01','국외','나라');
+
+INSERT INTO COMMON VALUES ('F','02','국외','프랑스');
+INSERT INTO COMMON VALUES ('F_','02','국외','파리');
+INSERT INTO COMMON VALUES ('F_','02','국외','베르사유');
+INSERT INTO COMMON VALUES ('F_','02','국외','지베르니');
+INSERT INTO COMMON VALUES ('F_','02','국외','몽생미셸');
+INSERT INTO COMMON VALUES ('F_','02','국외','오베르쉬와즈');
+INSERT INTO COMMON VALUES ('F_','02','국외','스트라스부르');
+INSERT INTO COMMON VALUES ('F_','02','국외','콜마르');
+INSERT INTO COMMON VALUES ('F_','02','국외','리옹');
+INSERT INTO COMMON VALUES ('F_','02','국외','보르도');
+INSERT INTO COMMON VALUES ('F_','02','국외','니스');
+INSERT INTO COMMON VALUES ('F_','02','국외','아비뇽');
+INSERT INTO COMMON VALUES ('F_','02','국외','칸');
+
+INSERT INTO COMMON VALUES ('F','03','국외','영국');
+INSERT INTO COMMON VALUES ('F_','03','국외','런던');
+INSERT INTO COMMON VALUES ('F_','03','국외','리버풀');
+INSERT INTO COMMON VALUES ('F_','03','국외','암스테르담');
+INSERT INTO COMMON VALUES ('F_','03','국외','글래스고');
+
+INSERT INTO COMMON VALUES ('F','04','국외','브라질');
+INSERT INTO COMMON VALUES ('F_','04','국외','상파울루');
+INSERT INTO COMMON VALUES ('F_','04','국외','리우데자네이루');
+INSERT INTO COMMON VALUES ('F_','04','국외','브라질리아');
+
+INSERT INTO COMMON VALUES ('F','05','국외','베트남');
+INSERT INTO COMMON VALUES ('F_','05','국외','호이안');
+INSERT INTO COMMON VALUES ('F_','05','국외','다낭');
+INSERT INTO COMMON VALUES ('F_','05','국외','하노이');
+INSERT INTO COMMON VALUES ('F_','05','국외','호치민');
+INSERT INTO COMMON VALUES ('F_','05','국외','프놈펜');
+INSERT INTO COMMON VALUES ('F_','05','국외','사이공');
+INSERT INTO COMMON VALUES ('F_','05','국외','위에');
+INSERT INTO COMMON VALUES ('F_','05','국외','하롱베이');
+
+INSERT INTO COMMON VALUES ('F','06','국외','중국');
+INSERT INTO COMMON VALUES ('F_','06','국외','베이징');
+INSERT INTO COMMON VALUES ('F_','06','국외','청도');
+INSERT INTO COMMON VALUES ('F_','06','국외','광저우');
+INSERT INTO COMMON VALUES ('F_','06','국외','충칭');
+INSERT INTO COMMON VALUES ('F_','06','국외','베이징');
+INSERT INTO COMMON VALUES ('F_','06','국외','상하이');
+INSERT INTO COMMON VALUES ('F_','06','국외','티엔진');
+INSERT INTO COMMON VALUES ('F_','06','국외','하얼빈');
+INSERT INTO COMMON VALUES ('F_','06','국외','쓰촨성');
+INSERT INTO COMMON VALUES ('F_','06','국외','타이위엔');
+INSERT INTO COMMON VALUES ('F_','06','국외','란저우');
+INSERT INTO COMMON VALUES ('F_','06','국외','항저우');
+INSERT INTO COMMON VALUES ('F_','06','국외','난징');
+INSERT INTO COMMON VALUES ('F_','06','국외','홍콩');
+INSERT INTO COMMON VALUES ('F_','06','국외','마카오');
+INSERT INTO COMMON VALUES ('F_','06','국외','타이페이');
+
+INSERT INTO COMMON VALUES ('F','07','국외','미국');
+INSERT INTO COMMON VALUES ('F_','07','국외','뉴욕');
+INSERT INTO COMMON VALUES ('F_','07','국외','로스엔젤레스');
+INSERT INTO COMMON VALUES ('F_','07','국외','오클랜드');
+INSERT INTO COMMON VALUES ('F_','07','국외','샌디에고');
+INSERT INTO COMMON VALUES ('F_','07','국외','시애틀');
+INSERT INTO COMMON VALUES ('F_','07','국외','워싱턴');
+INSERT INTO COMMON VALUES ('F_','07','국외','캘리포니아');
+INSERT INTO COMMON VALUES ('F_','07','국외','달라스');
+INSERT INTO COMMON VALUES ('F_','07','국외','뉴욕');
+INSERT INTO COMMON VALUES ('F_','07','국외','오클라호마');
+INSERT INTO COMMON VALUES ('F_','07','국외','시카고');
+INSERT INTO COMMON VALUES ('F_','07','국외','펜실베니아');
+INSERT INTO COMMON VALUES ('F_','07','국외','콜롬부스');
+INSERT INTO COMMON VALUES ('F_','07','국외','인디아나');
+INSERT INTO COMMON VALUES ('F_','07','국외','워싱턴DC');
+INSERT INTO COMMON VALUES ('F_','07','국외','뉴올리안즈');
+INSERT INTO COMMON VALUES ('F_','07','국외','아틀란타');
+INSERT INTO COMMON VALUES ('F_','07','국외','라스베가스');
+INSERT INTO COMMON VALUES ('F_','07','국외','뉴져지');
+INSERT INTO COMMON VALUES ('F_','07','국외','버지니아');
+INSERT INTO COMMON VALUES ('F_','07','국외','솔트랙시티');
+
+INSERT INTO COMMON VALUES ('F','08','국외','독일');
+INSERT INTO COMMON VALUES ('F_','08','국외','베를린');
+INSERT INTO COMMON VALUES ('F_','08','국외','하노버');
+INSERT INTO COMMON VALUES ('F_','08','국외','함부르크');
+INSERT INTO COMMON VALUES ('F_','08','국외','브레멘');
+INSERT INTO COMMON VALUES ('F_','08','국외','프랑크푸르트');
+INSERT INTO COMMON VALUES ('F_','08','국외','퀼른');
+INSERT INTO COMMON VALUES ('F_','08','국외','뷔르츠부르크');
+INSERT INTO COMMON VALUES ('F_','08','국외','뭰헨');
+INSERT INTO COMMON VALUES ('F_','08','국외','하이델베르크');
+
+INSERT INTO COMMON VALUES ('F','09','국외','네덜란드');
+INSERT INTO COMMON VALUES ('F_','09','국외','암스테르담');
+
+INSERT INTO COMMON VALUES ('F','10','국외','캐나다');
+INSERT INTO COMMON VALUES ('F_','10','국외','벤쿠버');
+INSERT INTO COMMON VALUES ('F_','10','국외','토론토');
+INSERT INTO COMMON VALUES ('F_','10','국외','몬트리올');
+INSERT INTO COMMON VALUES ('F_','10','국외','오타와');
+INSERT INTO COMMON VALUES ('F_','10','국외','퀘벡');
+INSERT INTO COMMON VALUES ('F_','10','국외','캘거리');
+
+INSERT INTO COMMON VALUES ('F','11','국외','스페인');
+INSERT INTO COMMON VALUES ('F_','11','국외','바르셀로나');
+INSERT INTO COMMON VALUES ('F_','11','국외','마드리드');
+INSERT INTO COMMON VALUES ('F_','11','국외','발렌시아');
+
+INSERT INTO COMMON VALUES ('F','12','국외','체코');
+INSERT INTO COMMON VALUES ('F_','12','국외','프라하');
+INSERT INTO COMMON VALUES ('F_','12','국외','플젠');
+INSERT INTO COMMON VALUES ('F_','12','국외','브르노');
+--스크랩구분(숙소:A 게시판:B)
+INSERT INTO COMMON VALUES ('SC','A','스크랩구분','숙소');
+INSERT INTO COMMON VALUES ('SC','B','스크랩구분','게시판');
+--속소 종류(호텔:H, 펜션:P) 
+INSERT INTO COMMON VALUES ('AK','H','숙소종류','호텔');
+INSERT INTO COMMON VALUES ('AK','P','숙소종류','팬션');
+
+
+--MEMBER 테이블
+INSERT INTO MEMBER VALUES ('admin','000','관리자',null,'admin@tripa.com',null, null,'02-1234-1234',null,null);
+INSERT INTO MEMBER VALUES ('abcabc11','12345','조인성','남자','abc@korea.com', '기억에 남는 추억의 장소는?', '가평', '010-1111-1111', '18/09/20', 500);
+INSERT INTO MEMBER VALUES ('kkk333','12366','유재석','남자','kkk333@korea.com', '자신의 인생 좌우명은?', '하고 싶은대로 살자', '010-1111-2222', '18/10/02', 530);
+INSERT INTO MEMBER VALUES ('dkssud4','123098','강호동','남자','dkssud4@korea.com', '자신의 보물 제 1호는?', '컴퓨터','010-1111-3333', '18/10/01',510);
+INSERT INTO MEMBER VALUES ('wlqrkffo1','44444','강동원','남자','wlqrkffo1@korea.com', '기억에 남는 선생님 성함은?', '김윤홍', '010-1111-4444', '18/09/21',1500);
+INSERT INTO MEMBER VALUES ('qorhvk2','qweasd','박보검','남자','qorhvk2@good.com', '타인이 모르는 자신만의 신체비밀이 있다면?', '가슴에 털이 남', '010-1111-5555', '18/09/29', 20);
+INSERT INTO MEMBER VALUES ('diadia22','cxzxc','송혜교','여자','diadia22@good.com', '받았던 선물 중 기억에 남는 독특한 선물은?',  '인형', '010-1111-6666','18/10/03',0);
+INSERT INTO MEMBER VALUES ('abvvv11','5555dw','전지현','여자','abvvv11@good.com', '유년시절 가장 생각나는 친구 이름은?', '천재민', '010-1111-7777', '18/09/24',10);
+INSERT INTO MEMBER VALUES ('rkrkrk11','qwedfg','전도연','여자','rkrkrk11@good.com', '인상 깊게 읽은 책의 이름은?', '자존감을 높이는 방법', '010-1111-8888', '18/10/01',500);
+INSERT INTO MEMBER VALUES ('dkdlvhs90','asd','손예진','여자','dkdlvhs90@good.com', '자신이 두번째로 존경하는 인물은?', '빌게이츠', '010-1111-9999', '18/10/02',10);
+INSERT INTO MEMBER VALUES ('ryqhansrh02','1zzxs','정유미','여자','ryqhansrh02@good.com', '다시 태어나면 되고 싶은 것은?', '서강준', '010-1111-0000', '18/10/01',30);
+INSERT INTO MEMBER VALUES ('dkdlvhs','123333','조정석','남자','dkdlvhs@korea.com', '기억에 남는 추억의 장소는?', '제주도', '010-1111-3049', '18/09/20', 40);
+INSERT INTO MEMBER VALUES ('ekdlth','12367','서강준','남자','ekdlth@korea.com', '자신의 인생 좌우명은?', '될대로 살자', '010-2346-4858', '18/10/02',20);
+INSERT INTO MEMBER VALUES ('akdntm22','123098','봉준호','남자','akdntm22@korea.com', '자신의 보물 제 1호는?', '카메라','010-1111-3333', '18/10/01',510);
+INSERT INTO MEMBER VALUES ('ckdmsdn123','1642','차은우','남자','ckdmsdn123@korea.com', '기억에 남는 선생님 성함은?', '송강호', '010-1561-3472', '18/09/21',30);
+INSERT INTO MEMBER VALUES ('dlwpgns','qw2dfd','이제훈','남자','dlwpgns2@good.com', '타인이 모르는 자신만의 신체비밀이 있다면?', '가슴에 털이 안남', '010-3462-5355', '18/09/29',500);
+INSERT INTO MEMBER VALUES ('enskqo234','57934r','배두나','여자','enskqo234@good.com', '받았던 선물 중 기억에 남는 독특한 선물은?',  '현금', '010-1246-2356','18/10/03',30);
+INSERT INTO MEMBER VALUES ('tlatladkdk','23474f','한예리','여자','tlatladkdk@good.com', '유년시절 가장 생각나는 친구 이름은?', '박보검', '010-1124-9745', '18/09/24',520);
+INSERT INTO MEMBER VALUES ('qhdudqhdud26','qw2edfg','이보영','여자','qhdudqhdud26@good.com', '인상 깊게 읽은 책의 이름은?', '자존감을 높이는 방법2', '010-7845-8888', '18/10/01',10);
+INSERT INTO MEMBER VALUES ('gotngotn57','asssd','김혜수','여자','gotngotn57@good.com', '자신이 두번째로 존경하는 인물은?', '워렌버핏', '010-1131-8643', '18/10/02',0);
+INSERT INTO MEMBER VALUES ('gywlsl441','6zzxf2s','공효진','여자','gywlsl441@good.com', '다시 태어나면 되고 싶은 것은?', '박보검', '010-1845-0340', '18/10/01',30);
+INSERT INTO MEMBER VALUES ('qhdudqhdud','384234','박보영','여자','qhdudqhdud@good.com', '다시 태어나면 되고 싶은 것은?', '조인성', '010-1355-1230', '18/10/01',530);
+
+-- 게시판 테이블
+--제주도(K04) 1, 아이디: abcabc11(조인성), 조회수:3, 스크랩:1, 18/06/16~18/06/18 등록일: 18/06/20
+INSERT INTO BOARD VALUES (0001, '종강하자마자 바로 제주도','18/06/20',500, TO_CLOB('<h3 style="text-align: center;">친구랑 둘이서 2박 3일 제주도 여행</h3><p style="text-align: center;" align="center">종강 하자마자 바로 비행기 타고 제주도로 떠났다</p><p style="text-align: center;" align="center">도착해서 바로 렌트카 인수하고 배고파서 곧장 밥 먹으러갔다 </p><p style="text-align: center;" align="center">원래 올래국수 가려고햇는데 문닫아서 멈칫했는데 지나가던 아줌마가 밑에 삼대국수가 더 존맛이라해서</p><p style="text-align: center;" align="center">삼대국수로 고고!!! </p><p style="text-align: center;" align="center">제주공항근처에 삼대전통국수라는곳인데 </p><p style="text-align: center;" align="center">정말정말정말 조오오오온맛이였다 </p><p style="text-align: center;" align="center">잘 알려지지도않고 리뷰도 거의없어서 걱정했는데 진짜 최고다...</p><p style="text-align: center; " align="center">고기국수 최고 </p><div style="text-align: center;" align="center"><img src="../image/Tripa_1K04_1.jpg_20181728_111711.jpg&#10;" title="1K04_1.jpg" style="width:90%;"><br style="clear:both;"><br></div><div style="text-align: center;" align="center"><br></div><div style="text-align: center;" align="center"><br></div><p style="text-align: center;" align="center">빌리카에서 빌린 나의 붕붕이 sm5</p><p style="text-align: center;" align="center">나의 첫 운전(?) 인데 나름 잘했다 ㅋㅋㅋ</p><p style="text-align: center;" align="center">빡빡한 헬게이트 주차장까지 섭렵한 나의 렌트카다</p><p style="text-align: center;" align="center">특히 시장주차장은 연휴라 그런지 매우.완전. 헬게이트였다</p><div style="text-align: center;" align="center"><img src="../image/Tripa_1K04_2.jpg_20181728_111719.jpg&#10;" title="1K04_2.jpg"><br style="clear:both;"><br></div><div style="text-align: center;" align="center"><br></div><div style="text-align: center;" align="center"><br></div><p style="text-align: center;" align="center">호텔 정말 좋다 ㅜㅜ 직원도 너무 친절하고 </p><p style="text-align: center;" align="center">침대도 폭신폭신 전망도 완전 좋고 </p><p style="text-align: center;" align="center">2박 묵었는데 하루 지나면 룸청소도 처음처럼 정말 깨끗하게 해준다 다음에 온다면 또 투숙하고싶은데 호텔이 너무 커서 방까지 가려면 정말 빡세다</p><p style="text-align: center;" align="center"><img src="../image/Tripa_1K04_3.jpg_20181728_111730.jpg&#10;" title="1K04_3.jpg"><br style="clear:both;"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: ce') ||TO_CLOB('nter;" align="center"><br></p><p style="text-align: center;" align="center">우도바다 정말 청량하구 예쁘다</p><p style="text-align: center;" align="center" style="width:100%;">우도는 무조건 꼭꼭 가야하는 곳이다</p><div style="text-align: center;" align="center"><img src="../image/Tripa_1K04_4.jpg_20181728_111738.jpg&#10;" title="1K04_4.jpg"style="width:100%;"><br style="clear:both;"><br></div><div style="text-align: center;" align="center"><br></div><div style="text-align: center;" align="center"><br></div><p style="text-align: center;" align="center">여기는!! 비바제트보트!!!! 15000원에 25분 코스인데 </p><p style="text-align: center;" align="center">와 진짜 재밌고 스릴넘침ㅋㅋㅋㅋㅋㅋㅋ</p><p style="text-align: center;" align="center"><img src="../image/Tripa_1K04_5.jpg_20181728_111746.jpg&#10;" title="1K04_5.jpg"><br style="clear:both;"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center">이번여행 완전 성공적이다 ㅜㅜ </p><p style="text-align: center;" align="center">이렇게 잘 맞는 친구랑 함께하니까 더더더더더 즐겁구 행복한 것 같다!!</p>'), 'abcabc11',10,3,'K','04','18/06/16','18/06/18');
+
+--제주도(K04) 2, 아이디: rkrkrk11(전도연), 조회수:50, 스크랩:2, 18/09/03~18/09/04 등록일: 18/09/10
+INSERT INTO BOARD VALUES (0002, '1박2일 짧게 다녀온 제주도 혼자 여행','18/09/10',500,TO_CLOB('<h3>1일차</h3><p>맨날 말만 하다가 드디어 제주도 왔다</p><p>원래 비 안온다고 해서 우산 안챙겼는데 갑자기 비와서 올리브영가서 우산 사버림.....</p><p>그래도 많이 춥지는 않아서 다행............</p><br><p>그리구 이날 베라체 갔다</p><p>여기는 진짜 여행 올 때마다 가는듯ㅋㅋㅋㅋㅋㅋ</p><p>그리고 가까운 곳에서 밥을 먹으러 갔다</p><p>원래는 미나식탁 가자고 했는데 걷다가 신세이카이를 가보고 싶어서 가기로 함</p><p>메뉴는 일본가정식???같은거 팔고 나는 모둠돈부리 먹음</p><p>맛은 기대이상였음 그냥 무작정 들어가서 먹은거치고는 괜찮았던것같은...??</p><p></p><p><img src="../image/Tripa_2K04_1.jpg_20181928_111907.jpg&#10;" title="2K04_1.jpg"><br style="clear:both;"><br></p><p><br></p><p>밥 먹고 카카듀라는 카페를 갔다</p><p>그냥 보이는데 괜찮아보여서 들어간거였는데 여기 유명한 곳이었나봄ㅋㅋㅋㅋ</p><p>녹차빙수 시켰는데 역시 괜히 유명한집이 아니었음 아이스크림 존맛임</p><p></p><p><img src="../image/Tripa_2K04_2.jpg_20181928_111915.jpg&#10;" title="2K04_2.jpg"><br style="clear:both;"><br></p><p><br></p><p>그리고 그냥 걸으러 월정리 갔는데 바람이 진짜 엄청불었ㅇ다</p><p>너무 불어서 모자 계속 날라감ㅋㅋㅋㅋㅋ</p><p>원래는 월정리에서 좀 여기저기 걷다가 사진도 찍고 싶었는데</p><p>바람이 너무 불어서 그냥 접었다') || TO_CLOB('ㅜㅜ</p><p></p><p><img src="../image/Tripa_2K04_3.jpg_20181928_111928.jpg&#10;" title="2K04_3.jpg"><br style="clear:both;"><br></p><p><br></p><p>그리고 월정리갈비밥 먹으러갔음</p><p>여기는 오빠네 게스트하우스 스탭분이 추천해준데였음</p><p>맛있었음</p>') ||TO_CLOB('<p>초밥은 먹기 너무 힘들고, 먹느라 진빠져서 많이 못먹음</p><p>여기는 주말이어서 웨이팅이 있었다</p><p>한 15분 정도? 기다렸음</p><p>제주도에서만 맛볼수 있는 맛! 이런건 아님 그냥 서울에서도 맛볼 수 있는 맛인데</p><p>그냥 맛있었음 가게도 이쁘고 암튼 존맛탱...더 먹을껄</p><h3><img src="../image/Tripa_2K04_4.jpg_20181928_111942.jpg&#10;" title="2K04_4.jpg"style="width:100%;"><br style="clear:both;"><br></h3><h3><br></h3><h3>2일차</h3><p>두번째 날은 주일정이 핑크뮬리 보러가는거!</p><p>근데 보통 핑크뮬리가 죄다 서부쪽에 몰려있어서 너무 멀고 근데 또 보고는 싶고해서 엄청 찾아다녔는데</p><p>동쪽에도 있고 가까워서 오게된 곳!</p><p>로즈마리 냄새 너무 좋고 카페 그냥 너무 이뻤다</p><p>핑크뮬리에서 찍은 사진은 필터 안넣고 그냥 찍어야 더 이쁜듯</p><p><img src="../image/Tripa_2K04_5.jpg_20181928_111957.jpg&#10;" title="2K04_5.jpg"><br ') || TO_CLOB('style="clear:both;"><br></p><p><br></p><p>그리고 우리는 흑돼지 먹으러 왔다</p><p>진정한 흑돼지는 제주도 와서 처음머거씀</p><p>맛은 있었는데 진짜 너무 비싸 18000원 실화??</p><p>제일 싼데로 갔는데 거의 57000원 나옴 근데 사진 보니까또먹고싶다</p><p><img src="../image/Tripa_2K04_6.jpg_20182028_112005.jpg&#10;" title="2K04_6.jpg"style="width:100%;"><br style="clear:both;"><br></p><p><br></p><p>그리구 밥 다 먹고 함덕해수욕장 감</p><p>사진만 보면 완전 피스풀한데 바람이랑 파도 장난아니었음</p><p>그래도 저기서 걷다가 사진도 어제보다는 많이 찍음ㅋㅋㅋㅋㅋㅋ</p><p><img src="../image/Tripa_2K04_7.jpg_20182028_112018.jpg&#10;" title="2K04_7.jpg"style="width:100%;"><br style="clear:both;"><br></p><p><br></p><p><br></p><p><br></p><p>1박2일이라 좀 짧았지만 그래도 계획한 곳은 다 갔다온것같다</p><p>비행기가 밤비행기라 그나마 다행ㅋㅋㅋ</p><p>암튼 즐거웠다 혼자서 제주도 여행 또 가고싶다</p>') , 'rkrkrk11',50,2,'K','04','18/09/03','18/09/04');  
+
+--제주도(K04) 3, 아이디: dlwpgns(이제훈), 조회수:58, 스크랩:1, 18/10/03~18/10/04 등록일: 18/10/06
+INSERT INTO BOARD VALUES (0003, '제주도 여행기록','18/10/06',500, TO_CLOB('<h3 style="text-align: left;">제주도 10/3 ~10/5 여행기록</h3><div style="text-align: left;" align="left"><br></div><h4 style="text-align: left;">1일차</h4><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_1.jpg_20182128_112116.jpg&#10;" title="3K04_1.jpg"></div><div style="text-align: left;" align="left"><br></div></div><p style="text-align: left;" align="left">제주도는 수학여행, 가족여행 말고는 성인 된 후 에는 자쥬여행으로 온 건 처음이라 무척 기대!</p><p style="text-align: left;" align="left">제주항공타고 김포-&gt;제주로 이동</p><p style="text-align: left;" align="left">공항 도착하자마자 A렌트카에서 예약한 차를 받고 저녁 먹으러 갔어요</p><div style="text-align: left;" align="left"><br></div><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_2.jpg_20182128_112123.jpg&#10;" title="3K04_2.jpg"></div><div style="text-align: left;" align="left"><br></div></div><p style="text-align: left;" align="left">엄마가 추천해준 <strong>연정식당</strong></p><p style="text-align: left;" align="left">가브리살과 청국장이 대표메뉴래요</p><p style="text-align: left;" align="left">삼겹살 같으면서도 더 쫄깃한게 차이점은 잘 모르겠지만 맛있어요</p><div style="text-align: left;" align="left">') || TO_CLOB('<br></div><div style="text-align: left;" align="left"><br></div><p style="text-align: left;" align="left">저녁 잘 먹고 숙소로 일단 갔어요</p><p style="text-align: left;" align="left">숙소는 애월에 있는 <strong>스테이하우스!</strong></p><p style="text-align: left;" align="left">바로 옆에 김만복김밥이 있더라구여 내일 점심으로 낙찰ㅋㅋㅋ</p><div style="text-align: left;" align="left"><br></div><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_3.jpg_20182128_112132.jpg&#10;" title="3K04_3.jpg"style="width:90%;"></div><div style="text-align: left;" align="left"><br></div></div><div style="text-align: left;" align="left"><br></div><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_4.jpg_20182128_112141.jpg&#10;"title="3K04_4.jpg"style="width:90%;"></div><div style="text-align: left;" align="left"><br></div></div><p style="text-align: left;" align="left">둘째날 점심, <strong>김만복김밥</strong>, 오징어무침이랑 꼭 같이 먹어야 한다길래 시키고 전복라면까지!</p><p style="text-align: left;" align="left">가격이 좀 사악했지만 한번쯤 먹어볼 만 한 것 같아요</p><p style="text-align: left;" align="left">엄청 특별한 맛은 아니지만 계란이 부드럽고...오징어무침 맛있고, 라면도 맛있으뮤ㅠ</p><div style="text-align: left;" align="left"><br></div><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_5.jpg_20182128_112155.jpg&#10;" title="3K04_5.jpg"style="width:100%;"></div><div style="text-align: left;" align="left"><br></div></div><p style="text-align: left;" align="left">날이 너무 좋아서 카밀리아힐로 바로 이동했어요</p><p style="text-align: left;" align="left">여기는 진짜 사진찍기 너무 좋아요ㅠㅠㅠㅠ </p><p style="text-align: left;" align="left">특히 기념품샵 옆에 있는 포토존 진짜 이쁨!!!</p><div style="text-align: left;" align="left"><br></div><h4 style="text-align: left;">2일차</h4><div style="text-align: left;" align="left">') || TO_CLOB('<br></div><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_6.jpg_20182228_112201.jpg&#10;"title="3K04_6.jpg"></div><div style="text-align: left;" align="left"><br></div></div><p style="text-align: left;" align="left">다음날은 <strong>오설록 녹차밭</strong></p><p style="text-align: left;" align="left">여기는 사람이 너무 많았어요 진짜 무지막지</p><p style="text-align: left;" align="left">기념품 사는 사람도 많고 위에 이니스프리 카페 가려는 사람도 많음</p><p style="text-align: left;" align="left">아무튼 주문하고 사진찍었는데 비주얼 나름 성공</p><div style="text-align: left;" align="left"><br></div><div style="text-align: left;" align="left"><br></div><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_7.jpg_20182228_112208.jpg&#10;" title="3K04_7.jpg"style="width:100%;"></div><div style="text-align: left;" align="left"><br></div></div><p style="text-align: left;" align="left">점심은 오기 전에 찾아봤던 <strong>전복돌솥비빔밥!</strong>(가게 이름은 생각이 잘안나요)</p><p style="text-align: left;" align="left">여기 돌솥밥 진짜 너무 맛있어요 버터 넣고 간장 넣고 비벼서 먹는데 진짜 맛있으무ㅠㅠㅠㅠ</p><div style="text-align: left;" align="left"><br></div><div style="text-align: left;" align="left"><br></div><div style="text-align: center;" align="center"><div style="text-align: left;" align="left"><img src="../image/Tripa_3K04_8.jpg_20182228_112213.jpg&#10;" title="3K04_8.jpg"style="width:100%;"></div><div style="text-align: left;" align="left"><br></div></div><p style="text-align: left;" align="left">다음은 <strong>바다다카페</strong></p><p style="text-align: left;" align="left">음료 한잔, 커피 한 조각 먹었어요 카페 이뻐서 사진도 찍음ㅋㅋㅋㅋ</p>') , 'dlwpgns',58,1,'K','04','18/10/03','18/10/04');
+
+--부산 (K03) 1, 아이디: kkk333(유재석), 조회수:38, 스크랩:0, 18/10/03~18/10/03 등록일: 18/10/15
+INSERT INTO BOARD VALUES (0004, '부산 당일치기 여행','18/10/15',500, TO_CLOB('<p>안녕하세요. 이번 여름휴가의 마지막 부산여행입니다.</p><p><br></p><p>사실 당일치기는 아니고 감포에서 일찍나와서 송도 해상케이블카 타러 왔습니다.</p><p>홈피에서 예약 하면 천원 할인이 되는걸루 알고있습니다.</p><p>미리 예약해서 좀더 저렴하게 타시고요.</p><p>오전 10시쯤 도착하니 주차장은 널널한 편이였는데, 왕복으로 보고 암남주차장에 다시가니 만차 였습니다.</p><p></p><p><br></p><p><img src="../image/Tripa_1K03_1.jpg_20182328_112351.jpg&#10;" title="1K03_1.jpg"><br style="clear:both;"><br></p><p>케이블카 타러가는길..</p><p>부산 송도...올때마다 변해 있습니다.</p><p>요번엔 아이들이 바닥이 보이는 케이블카를 타고 싶다고 해서 .. 좀 더 비싸긴 하지만 크리스탈 크루즈로 예약 했습니다. 좀 무리 했습니다. ㅎㅎ</p><p>표를 샀다고 해서 바로 입장되는게 아니고 이렇게 앞에서 예약한 순서대로 차례를 불러줍니다. 그때 입장 하면 됩니다.</p><p>부산 시내가 다 보이는 케이블카... 여수보단 좀 더 짧은 것 같습니다.</p><p>참고로 케이블카 내부는 에어컨 없습니다.휴대용 선풍기 하나 가지고 탑승하세요..좀 덥습니다.</p><p></p><p><br></p><p><br></p><p><img src="../image/Tripa_1K03_2.jpg_20182428_112402.jpg&#10;" title="1K03_2.jpg"><br style="clear:both;"><br></p><p>요렇게 왕복하고 바로 자갈치 수산시장으로 향했습니다. </p><p>바로 10분거리에 자갈치 시장 공용주차장으로 향했습니다. </p><p>왜냐면 여긴 저공해 차량 50% 할인이 되어서였습니다. </p><p>사실 밥먹고 주차티켓 주는데 깜박하고 말 안하고 나왔는데 </p><p>혹시 여쭤보니 저공해차량 할인된') || TO_CLOB('다고 하네요.. </p><p>입구쪽에 통제하시는 분 있으신데..만차라고 뜨는거 확인하고 돌려보내고 입장하라고 합니다.  </p><p>하지만 지하3층엔 자리가 좀 있었습니다. 공간은 넓진 않고요.</p><br><p>바로 자갈치시장앞에 부산국제영화제거리 에서 좀만 가면 되는 깡통시장과 국제시장에 갔고요.</p><p>여긴 최근에 부산 모터쇼에서 큰아이와 둘이 갔다왔는데</p><p>다시 한번 가고 싶다고 해서 가게 되었습니다.</p><p><br></p><p><img src="../image/Tripa_1K03_3.jpg_20182528_112538.jpg&#10;" title="1K03_3.jpg"><br style="clear:both;"><br></p><p>유명한 이가네 떡볶이...이날 무지 더워서 줄서지 않고 바로 먹을수 있었습니다.</p><p></p><p><br></p><p><img src="../image/Tripa_1K03_4.jpeg_20182528_112551.jpeg&#10;"title="1K03_4.jpeg"><br style="clear:both;"><br></p><p>그리고 아이들이 덥고 힘들고 지칠때쯤</p><p>가루쿡이 많다는 김영상회로 왔습니다.</p><p>이때 아이들이 잠깐 살아났습니다. ㅋㅋ</p><p>여기 맞은편 상가 2층에 2호점 있는데 시원하고 널직하니.</p><p>차라리 여기에서 구매하는게 더 좋을것 같네요.. 다 사고 올라가봤는데</p><p>제품수 비슷했습니다. 현금 할인도 되고요.</p><p></p><p><br></p><p><img src="../image/Tripa_1K03_5.jpg_20182628_112601.jpg&#10;" title="1K03_5.jpg"style="width:100%;"><br style="clear:both;"><br></p><p>가루쿡사고 아이들이 지칠때쯤 자갈치시장앞에 생선 구이 집으로 갔습니다.</p><p>중 으로 주문했는데 고등어와 갈치.넙치? 등등이 나왔는데</p') || TO_CLOB('><p>바빠서 그런지 미리 구워나서 육즙은 좀 빠졌지만 그냥 나름 먹을만 했습니다.</p><p>미역국하고 금방 한사발 했습니다.</p><p>밥 다먹고 바로 맞은편 자갈지수산시장 2층 건어물 코너로 갔습니다.</p><p>살거 다사고 1층 수산시장으로 가보았습니다.</p><p><br></p><p>10년에 왔을때보다 깨끗해지고 정리정돈도 잘 되어있고 좋았고요. 아쉽지만 동탄으로 다시 올라가야 되서 회는 다음으로 기약하고</p><p>부산 자갈치 시장에서 동탄역까지 4시간 반 걸려서 도착했습니다.</p> <p>전 갠적으로 운전하는걸 좋아해서 4시간이면 힘들다고 하는데 포항도 당일치기 갔다왔는데 피곤한지는 잘 모르겠습니다.</p><p> 와이프랑 둘이 말하면서 오니 나름 급방 왔습니다..</p><p>암튼 즐거운 부산 여행 후기 였습니다.</p><p>날풀리면 다시 가볼까 합니다..부산...............</p>'), 'dkssud4',28,0,'K','03','18/03/03','18/03/03');
+
+--부산 (K03) 2, 아이디: dkssud4(강호동), 조회수:28, 스크랩:0, 18/03/03~18/03/03 등록일: 18/03/15
+INSERT INTO BOARD VALUES (0005, '조카와 함께한 부산 당일치기 여행','18/03/15',500, TO_CLOB('<h3>조카와 함께한 부산 당일치기 여행</h3><img src="../image/Tripa_2K03_2.jpg_20182728_112710.jpg&#10;" title="2K03_2.jpg"><br style="clear:both;"></h3><p>멀리 떠나는 여행도 좋지만 때로는 가볍게 집과 가까운 곳에서 </p><p>가족들과 여유롭게 시간을 보내는 것도 참 좋은 여행이고 소중한 추억이라고 생각합니다.</p><p>이번 여행도 조카와 함께 떠나게 되는 여행이라 1박2일이나 장거리 여행은 힘들고,</p><p>당일치기로 간단하게 부산여행을 떠나기로 했습니다.</p><p>아이와 함께 하는 여행이기 때문에 편안한 이동을 위해서라면 자동차는 필수죠. </p><p>딜리버리 카셰어링 딜카를 통해 대여한 쏘나타 뉴라이즈.  </p><p>내가 원하는 곳까지 차량을 배달해주고 무엇보다 차량관리가 매우 잘되어 있다는 것이 딜카의 최고장점인 것 같습니다.</p><p></p><p><img src="../image/Tripa_2K03_1.jpg_20182728_112701.jpg&#10;" title="2K03_1.jpg"><br ') || TO_CLOB('style="clear:both;"><br></p><p><br></p><p><br></p><p>처음으로 향한 곳은 바로 부산 중구에 위치하고 있는 용두산공원</p><p>용두산공원은 부산역과 가까운 거리에 위치하고 있어서 부산역에서 방문하기에 접근성도 좋고,</p><p>주변 관광지인 남포동이나 국제시장도 가까이 있어서 용두산공원을 관람하고 다른 장소로 이동하기에도 편리합니다.</p><p>용두산공원 전망대 입장료는 대인 8,000원 소인 6,000원.</p><p>해발은 69m,타워높이는 120m인 전망대에 올라가시면 부산시내를 한눈에 볼 수 있습니다+_+</p><p>야경이 정말 좋다고 하던데 밤에 오시면 더욱 좋겠죠...?</p><p></p><p><br></p><p><br></p><p>삼겹살 무한리필식당에 방문하여 저렴한 가격으로 배부르게 삽겹살도 먹고</p><p></p><p><img src="../image/Tripa_2K03_3.jpg_20182728_112718.jpg&#10;" title="2K03_3.jpg"><br style="clear:both;"><br></p><p><br></p><p><br></p><p>다음으로 향한 목적지는 부산 스포원파크 금정체육공원</p><p>입장료도 무료이고 자전거대여부터 물놀이보트 탑승도 가능하며 워터파크까지 있어서 아이들과 함께 방문하기에는 정말 좋습니다.</p><p>주차비도 무료라는 사실~!</p><p><img ') || TO_CLOB('src="../image/Tripa_2K03_4.jpg_20182728_112725.jpg&#10;" title="2K03_4.jpg"><br style="clear:both;"><br></p><p><br></p><p>자전거 대여요금은 1시간에 3,000원 </p><p>일반적인 자전거 외에도 커플용 자전거,3인용 마차도 있었고 유아전동차대여도 가능했습니다.</p><p><img src="../image/Tripa_2K03_5.jpg_20182728_112738.jpg&#10;" title="2K03_5.jpg"><br style="clear:both;"><br></p><p><br></p><p>해진 시간에 차량을 반납하니 하이패스요금과 주행요금이 자동으로 결제가 됩니다. </p><p>차종을 보면 카니발이나 스타렉스 같은 승합차도 준비되어 있던데  </p><p>인원이 많다면 목적에 맞게 승합차를 대여해서 여행을 떠나셔도 즐거운 여행이 될 것 같습니다~</p><p><br></p><p>부산 당일치기 여행 포스팅은 여기서 끝-!</p>'), 'dkssud4',28,0,'K','03','18/03/03','18/03/03');
+
+--천안 (K01) 1, 아이디: wlqrkffo1(강동원), 조회수:10 스크랩:1 18/05/01~18/05/01 등록일: 18/05/05
+INSERT INTO BOARD VALUES (0006, '천안여행 당일치기 여행','18/05/05',500, TO_CLOB('<p style="text-align: center;" align="center">천안여행을 다녀왔습니다</p><p style="text-align: center;" align="center">천안여행?!</p><p style="text-align: center;" align="center">사실 천안과 가까운 청주에서 어린 시절을 보냈던지라,</p><p style="text-align: center;" align="center">천안으로 떠나는 여행은 뭔가 낯설었습니다</p><p style="text-align: center;" align="center">"여행"이란 단어를 붙일 정도로 먼거리가 아니었던지라 그랬던 것 같습니다</p><p style="text-align: center;" align="center">하지만 천안을 처음 가보는 와이프와 냉콤 떠났습니다</p>') || TO_CLOB('<p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><img src="../image/Tripa_1K01_1.jpg_20182828_112840.jpg&#10;" title="1K01_1.jpg"><br style="clear:both;"><br></p><p style="text-align: center;" align="center">먼저 늦은 점심으로 순대국을 골랐습니다</p><p style="text-align: center;" align="center">순대국으로 유명한 병천순대거리에 위치한</p><p style="text-align: center;" align="center">"청화집"</p><p style="text-align: center;" align="center">맛있었습니다!! ?</p><p style="text-align: center;" align="center">무엇보다 담백했고 깔끔했어요?</p><p style="text-align: center;" align="center">느낌은 최근에 먹어봤던 수원 호매실에 위치한 "왕순대식당"과 비슷했습니다</p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center">밥을 먹었으니 이제 후식을 먹으러 떠나야죠!!!ㅋㅋㅋㅋㅋ</p><p style="text-align: center;" align="center">"천안하면~" 하고 소개되는 빵집인</p><p style="text-align: center;" align="center">"뚜쥬르"</p><p style="text-align: center;" ') || TO_CLOB('align="center"><br></p><p style="text-align: center;" align="center"><img src="../image/Tripa_1K01_2.jpg_20182928_112910.jpg&#10;" title="1K01_2.jpg"><br style="clear:both;"><br></p><p style="text-align: center;" align="center">응?! 뚜레쥬르 아냐? 뚜레쥬르 짝퉁아냐? 라고 할지 모르겠지만,</p><p style="text-align: center;" align="center">뚜레쥬르보다 긴 역사를 갖고있으며</p><p style="text-align: center;" align="center">(확실친 않지만 풍문에는) 되려 뚜레쥬르가 여기서 이름을 갖고왔다는 얘기도 들었습니다</p><p style="text-align: center;" align="center">국가대표빵집....</p><p style="text-align: center;" align="center">개인적으로는 나름 빵을 좋아한다고 자부해서,</p><p style="text-align: center;" align="center">안가본 빵집이 없다고 생각하고 있어요</p><p style="text-align: center; " align="center">제가 생각하는 최고의 빵 맛집은 "내가 자주가는 곳" 인 것 같습니다 ㅎㅎ</p><p style="text-align: center;" align="center">빵을 맛있게 먹고는 숙소로 떠납니다</p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><img src="../image') || TO_CLOB('/Tripa_1K01_3.jpg_20182928_112916.jpg&#10;" title="1K01_3.jpg"style="width:100%;"><br style="clear:both;"><br></p><p style="text-align: center;" align="center">"대명리조트 천안"</p><p style="text-align: center;" align="center">사실 천안으로 여행을 정한 이유 중에 하나는</p><p style="text-align: center;" align="center">대명리조트는 기명회원권이 있어서 숙소를 저렴하게 구할 수 있었던게</p><p style="text-align: center;" align="center">크게 작용한게 아닐까 싶어요;;;</p><div style="text-align: center;" align="center"><br></div><div style="text-align: center;" align="center"><br></div><div style="text-align: center;" align="center"><br></div><div style="text-align: center;" align="center"><img src="../image/Tripa_1K01_4.jpg_20182928_112924.jpg&#10;" title="1K01_4.jpg"style="width:100%;"><br style="clear:both;"><br></div><p style="text-align: center;" align="center">다음 장소는 "독립기념관"</p><p style="text-align: center;" align="center">어렸을 때도 웅장했던 기억이 나는데</p><p style="text-align: center;" align="center">나이가 들어도 웅장해보이네요</p><p style="text-align: center;" align="center">텔레비 끝날 때 애국가 나올 때만 봤었던 그거 그거!!</p><p style="text-align: center;" align="center">가족끼리 한번 시간내서 가볼만한 것 같습니다</p><p style="text-align: center;" align="center">점심을 공원매점 컵라면으로 해결했어요</p><p style="text-align: center;" align="center">그리고는 어제 들렀던 뚜쥬르 제과점에서</p><p style="text-align: center;" align="center">놓고왔던 우산을 챙기고</p><p style="text-align: center;" align="center">부모님과 장모님께 드릴 빵을 삽니다</p><p style="text-align: center;" align="center">아! 그 외에 다른 가족들께 줄 것도 더 샀었네요;;</p><div style="text-align: center;" align="center"><br></div><div style="text-align: center;" align="center"><br></div><p style="text-align: center;" align="center">별로 한건 없는 천안여행같지만,</p><p style="text-align: center;" align="center">다시 생각하니 또 가고 싶다ㅠㅜ</p>'), 'wlqrkffo1',10,1,'K','01','18/05/01','18/05/01');
+
+--전주 (K02) 1, 아이디: wlqrkffo1(강동원), 조회수:10 스크랩:3 18/06/01~18/06/02 등록일: 18/06/05
+INSERT INTO BOARD VALUES (0007, '급 전주여행','18/06/05',500, TO_CLOB('<p>전주 여행 중 방문했던 그날의 온도 후기.</p><p>미니 컨트리맨 시승 중에 간 곳인데 지금 전주에서 제일 핫하디 핫한 곳이라 보면 된다.</p><p><img src="../image/Tripa_1K02_1.jpg_20183028_113054.jpg&#10;" title="1K02_1.jpg"><br style="clear:both;"><br></p><p><br></p><p>카페인데 블로그고 인스타고 난리 난리중.</p><p>한옥마을 과감히 제끼고 여기부터 가길 추천함.</p><p>이미 여기도 알려질 데로 알려져서 사람이 많은 건 아쉬운 점이다.</p><p>전주 입성!</p><p>매일 타던 내 차가 아니라서 긴장한 상태였는데도 편안했던 컨트리맨 짱!</p><p>내비랑 하이패스 없는 점이 불편했지만 블루투스 있어서 음악 잘 들으며 왔다.</p><p>식사는 베테') || TO_CLOB('랑 칼국수에서.</p><p>허름했지만 저명한 명성을 자랑하는 집 답게 바글바글했다.</p><p>맛은 나쁘지 않았고 양이 많아서 좋았다. ㅋㅋㅋㅋㅋ</p><br><br><p>그리고는 이번 전주 여행의 목적인 그날의 온도로.</p><p>포람페 카페에서 추천글 올라온 거 보고 알게 되었는데 대저택(?) 크기의 주택을 개조해서 카페로 만든 곳이다.</p><p>주차장은 입구 쪽에 따로 있고 요금은 따로 안 받는다.</p><p>실내에 어설픈 자리들만 남아 있어서 과감하게 야외 파라솔에 있기로 했다.</p><p><img src="../image/Tripa_1K02_4.jpg_20183128_113130.jpg&#10;" title="1K02_4.jpg"><br ') || TO_CLOB('style="clear:both;"><br></p><p>점심시간 지나서 가니 사람들이 매우 많았다.</p><p>특히나 여긴 여름에 인기가 폭발할 카페다.</p><p>아이스 라떼와 아이스티의 조합.</p><p>맛은 그저 그랬지만 그건 크게 안 중요할 느낌이 든다. ㅎㅎㅎㅎ</p><p>실내도 여기저기에 포토존이 있다.</p><p>이제보니 노출 콘크리트 컨셉이 풀장부터 쭉 이어지고 있었다.</p><p>3층에 루프탑도 있긴 한데 땡볕이고 해서 금방 내려왔다.</p><p>다시 한 번 드러나는 규모의 위엄.</p><p>아무래도 전주 여행가면 한옥마을을 지나치긴 힘들겠지만 거긴 이제 한 물 갔으니 대충 보고 이런 카페에서 힐링하는 걸 추천합니다.</p><p>두베에 이어서 그날의 온도까지 전주도 핫플레이스가 늘어간다.</p><p><img src="../image/Tripa_1K02_3.jpeg_20183128_113149.jpeg&#10;" title="1K02_3.jpeg"><br style="clear:both;"><br></p>'), 'wlqrkffo1',10,3,'K','02','18/06/01','18/06/02');
+
+--춘천 (K05) 1, 아이디: wlqrkffo1(강동원), 조회수: 20 스크랩:0 18/07/01~18/07/03 등록일: 18/07/05
+INSERT INTO BOARD VALUES (0008, '춘천 맛집 여행','18/07/05',500, TO_CLOB('<p style="text-align: center;" align="center">친구와 주말에 춘천으로 당일 여행을 다녀왔어요~ </p><p style="text-align: center;" align="center">춘천은 ITX열차도 있고 경춘선이 있어서 </p><p style="text-align: center;" align="center">서울에서 1시간 30분이면 오고 가더라구요~ </p><p style="text-align: center;" align="center">기차로 편하게 오고 갈 수도 있고 해서 </p><p style="text-align: center;" align="center">닭갈비 먹으로 춘천 다녀왔습니다 ㅎ </p><p style="text-align: center;" align="center">춘천 닭갈비는 선술집에서 닭을 숯불에 구워 </p><p style="text-align: center;" align="center">술안주로 개발이 되어 닭갈비가 생겨났다고해요~ </p><p style="text-align: center;" align="center">철판 닭갈비도 있지만  춘천에는 숯불 닭갈비 맛집도 많은 편이에요 </p><p style="text-align: center; " align="center">저는 숯불 닭갈비보다 철판에 볶아먹는 닭갈비가 좋아서 </p><p style="text-align: center;" align="center">맛집을 찾아보니 학곡리라는 곳에 닭갈비 맛집이 있더라구요. </p><p ') || TO_CLOB('style="text-align: center;" align="center">한건물이 전부 닭갈비 집이라 기다림 없이 먹을 수 있을 것 같아서</p><p style="text-align: center;" align="center">여기로 왔는데 먹다보니 웨이팅이 있더라구요...  </p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><img src="../image/Tripa_1K05_1.jpg_20183328_113300.jpg&#10;"title="1K05_1.jpg"><br style="clear:both;"><br></p><p style="text-align: center;" align="center">인기에 깜짝 놀라고 맛에 깜짝 놀랐던 학곡리 맛집 닭갈비집 후기 입니다.</p><p style="text-align: center;" align="center">학곡리 닭갈비 집은 다른곳과는 다르게 참기름?이 들어가서 </p><p style="text-align: center;" align="center">타는 듯해도 맛있께 볶아지고 있더라구요. </p><p style="text-align: center;" align="center">익을수록 고소한 맛이 나는게 참기름이 들어간게 확실한것 같았어요~ </p><p style="text-align: center;" align="center">맛있게 익은 닭갈비들 빨리 먹어줘야겠죠</p><p ') || TO_CLOB('style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center"><img src="../image/Tripa_1K05_2.jpg_20183328_113314.jpg&#10;" title="1K05_2.jpg"><br style="clear:both;"><br></p><p style="text-align: center;" align="center">마무리로 볶음밥은 당연히 필수 입니다~ </p><p style="text-align: center;" align="center">닭을 좀 남기고 같이 볶으면 맛은 두배인거 아시죠? </p><p style="text-align: center;" align="center">2층 건물에 테이블이 40~50개는 되보였는데 </p><p style="text-align: center;" align="center">먹다보니 기다리는 분들이 잔뜩~생겼네요.. </p><p style="text-align: center;" align="center">수다떨고 싶었는데 빨리 자리를 비켜드려야겠어요</p><p style="text-align: center;" align="center"><br></p><p style="text-align: center;" align="center">급하게 와서 많이 알아보지 못했었는데 </p><p style="text-align: center;" align="center">정말 맛있게 먹었던 학곡리 닭갈비 맛집~ </p><p style="text-align: center;" align="center">너무너무 행복한 하루 보냈네요 ㅎ </p>'), 'wlqrkffo1',20,0,'K','05','18/07/01','18/07/03');
+
+--일본 (F01) 1, 아이디: qhdudqhdud(박보영), 조회수: 20 스크랩: 0 18/01/05~18/01/08 등록일: 18/01/10
+INSERT INTO BOARD VALUES (0009, '[일본] 오사카/교토/고베 3박 4일 여행','18/01/10',500, TO_CLOB('<p><img src="../image/Tripa_1F01_1.jpg_20183428_113401.jpg&#10;" title="1F01_1.jpg"><br style="clear:both;"style="width:100%;"><br></p><p>올해의 오사카/교토 방문 중에서도 </p><p>골든위크 때 동생과 유메와 함께 오사카/교토 여행을 다녀왔던 여행기.  </p><p>여행기가  많이 밀려서 이건 포스팅 하나로 끝내야겠다.</p><p>오사카 여행은 오랜만이었다.  </p><p><br></p><p>어렸을 때 매일 싸우던 자매는 성인이 되고 동생이 도쿄에 가고. 결혼을 하고 나서야 친해졌다. </p><p>이후 우린 오사카에 함께 갔고, 서로의 다른 모습을 이해하는 진정한 자매로 거듭났다</p><p>. 당시 여행 일정은 짧았지만, 다음 해부터 함께 여름휴가를 보냈던걸 생각하면</p> <p>오사카는 서로를 다시 바라보게 한 최고의 장소였던 셈이다.</p><p>유네스코 세계문화유산인 교토의 관광지는 포화상태다. </p><p>좁은 골목에도 사람은 북적이고, 어딜 가든지 줄 서서 기다리는 건 기본이다. </p><p>듀듕과 처음 교토를 방문했을 때도, 몇 년 전 교토를 방문했을 때도 이 정도의 인파는 아니었는데 </p><p>몇 년 사이에 기하급수적으로 관광객이 늘었다. </p><p><br></p><p>교토는 현재 오버 투어리즘 상태로 주민들이 관광객으로 인한 고통을 호소하는 단계가 되었다. </p><p>거리를 가득 메운 사람들로 주민들의 삶의 질은 현저히 낮아졌고, 쓰레기는 넘쳐났다. </p><p>더 이상 교토는 고요하고 한적한 도시가 아니었고, 마음을 편안하게 해주는 녹차 빛 도시도 아니었다. </p><p>몇 년 전이라면 고즈넉한 분위기의 교토에서 살아보고 싶다고 생각했다면, 이제는 관광지가 되어버린 교토를 피하고 싶은 생각이다.</p><p>튀김이 도도하게 서있는 덴뿌라동을 점심으로 먹은 후 녹차 아이스크림으로 입가심을 했다. </p><br><img src="../image/Tripa_1F01_2.jpg_20') || TO_CLOB('183428_113428.jpg&#10;" title="1F01_2.jpg"><br style="clear:both;"><img src="../image/Tripa_1F01_3.jpg_20183428_113452.jpg&#10;" title="1F01_3.jpg"><br style="clear:both;"><br><p>교토 가와라마치 역에서 오사카 난바로 돌아가기 전, 교토 니시키 시장을 구경했다. </p><p>전에 교토에 함께 왔을 때 니시키 시장을 잠시 들렸었는데,  교토의 부엌답게 여전히 사람은 많다.</p><br><p>다음으로 사카에 스시!</p><p>한국인이 많이 오는 집답게 한국어 메뉴판은 기본으로 구비해놨다. </p><p>한 점당 100엔~300엔. 가끔 600엔짜리도 있다.</p><br><br><br><p>오늘은 여기까지 쓰고 2편에서 다시 쓸게요!</p>'), 'qhdudqhdud', 20, 0, 'F', '01', '18/01/05', '18/01/08');
+
+--일본 (F01) 2, 아이디: akdntm22(봉준호), 조회수: 22 스크랩: 1 18/02/05~18/02/09 등록일: 18/02/10
+INSERT INTO BOARD VALUES (0010, '오사카 여행기','18/02/10', 500, TO_CLOB('<p><br></p><p style="text-align: center; " align="center"><img src="../image/Tripa_2F01_1.jpg_20183928_113904.jpg&#10;" title="2F01_1.jpg"><br style="clear:both;"><br></p><p>이오스의 직원들은 일 년에 수차례 출장을 통해 여행을 경험하고, 호텔을 둘러보면서</p><p>고객분들께 좋은 정보, 정확한 정보를 드리기 위해 발 빠르게 움직이고 있어요.</p> <p>이번에는 간사이 지역을 둘러보기 위해서 왔는데요. 날씨가 너무 더워요</p><p>36도에 습도가 정말 장난 아니랍니다. 그래도 좋은 사진, 좋은 정보를 드리기 위해</p><p>발바닥에 불이 나도록 다니고 있는데요! 오사카 여행, 교토 여행, 고베 여행에 관한 유용한 정보! </p><p>기대해주세요~~ 후회하지 않으실 ') || TO_CLOB('거예요!</p><p>이번에는 한큐패스를 이용해봤는데요. 한큐패스로 오사카에서 교토, 아라시야마, 고베를 갈 수 있어요. </p><p>알차게 이용하고, 가는 방법 등을 사진으로 꼼꼼하게 담았는데요. </p><p>많은 분들이 궁금해하시는 부분 속 시원하게 해결해 드릴게요~</p><p>오사카에서는 역시 도톤보리죠! </p><p>날씨가 너무너무 좋아서 더위를 먹었지만</p><p>사진은 괜찮죠? 가을 하늘 같고 말이죠 ㅎㅎ</p><p>현실은 36도의 기온과 습도와 엄청 싸웠어요</p><p><br></p><p><br></p><p><img src="../image/Tripa_2F01_3.jpg_20183928_113928.jpg&#10;" title="2F01_3.jpg"><br style="clear:both;"><br></p><p><img src="../image/Tripa_2F01_2.jpg_20183828_113853.jpg&#10;" title="2F01_2.jpg"><br style="clear:both;"><br></p><p>유니버설 스튜디오 제팬도 다녀왔어요. </p><p>저도 처음 가보는 건데요. 정말 재미있더라고요! </p><p>동') || TO_CLOB('심의 세계로 돌아간 느낌! </p><p>퍼레이드를 하는데요. 워터 서프라이즈~ </p><p>유니버설 스튜디오 제팬에 왔으면 호그와트 성에서</p><p>버터 비어 정도는 먹어줘야죠~ </p><p>저는 너무 목이 말라서 원샷을 했어요 ㅎㅎ</p><p>톡 쏘면서 부드러운 게 맛있더라고요~</p><p>유니버설 스튜디오에서 급하게 달려온 이곳! </p><p>오사카 시내를 한눈에 내려다볼 수 있는 전망대</p><p>아베노 하루카스예요. 해가 지고 매직아워에 딱 방문했는데요. </p><p>덕분에 멋진 하늘과 멋진 야경을 볼 수 있었어요!</p><p>1일차 일본 여행일기는 여기까지! 2편에서 다시 쓸게요</p>'), 'akdntm22', 22, 1, 'F', '01', '18/02/05', '18/02/09');
+
+--프랑스 (F02) 1, 아이디: tlatladkdk(한예리), 조회수: 100 스크랩: 1 18/01/05~18/01/15 등록일: 18/01/19
+INSERT INTO BOARD VALUES (0011, '10일간의 프랑스 여행일기','18/01/19', 500, TO_CLOB('<p style="text-align: center; " align="center"><img src="../image/Tripa_1F02_3.jpg_20184928_114903.jpg&#10;" title="1F02_3.jpg"><br style="clear:both;"><br></p><p>낭만의 도시 파리의 대한 로망을 실현하기 위해 다녀온 프랑스여행.</p><p>KRT여행사와 함께 9일간의 일주를 즐겨서 유명 관광도시와 더불어 유명하지&nbsp;</p><p>않는 숨겨진 보석 같은 도시까지 모두 다녀올 수 있었어요. </p><p>보통 유럽은 여러 나라를 방문하는 몇 개국 며칠의 여정이 대부분인데,&nbsp;</p><p>이렇게 한 나라를 둘러 보니 특별했어요! 대도시부터 소도시까지 모두 들리는 일정이라서 깊이 있는 프랑스여행이었어요. </p><p><br></p><p>이번엔 이렇게 긴 한 나라 방문은 처음이었는데, 확실히 배우고 경험하고 느끼는 것이 많았어요.</p><p>역사부터 미술사, 경제, 문화까지 모두 섭렵하고 돌아왔네요. </p><p>그래서 더 특별했어요~ KRT여행사 상품이 구성이 좋더라고요.</p><p>대한항공을 타고 다녀왔기 때문에 장거리 비행으로 체력적으로 피로도가 적었어요. </p><p>편안한 기내환경과 친절한 서비스 그리고 한식으로 기내식을 먹으니 심적으로 편안해서 그런지 원래 기내에서 불편해서 잠을 잘 못 자는데 잠도 잘 자고 도착했어요. </p><p>보르도 와이너리도 방문하고 신비로운 몽생미셸 수도원, 루아르의 고성 등 일정에 포함된 관광지들이 모두 특색이 있어서&nbsp;</p><p>어느 한 도시 빠지지 않고 모두 기억에 남았네요. </p><p>저는 파리에 대한 로망이 있었기 때문에 그 중에서 파리가 최고였지만! KRT여행사와 함께 방문했던 모든 도시가 멋지고 좋았어요~</p><p><br></p><p><img src="../image/Tripa_1F02_2.jpg_20184728_114711.jpg&#10;" title="1F02_2.jpg"style="width:90%;"><br style="clear:both;">') || TO_CLOB('<br></p><p>파리에 있는 오르세 미술관이에요. 이미 프랑스여행을 즐긴 친구가 말하길&nbsp;</p><p>루브르 박물관 보다는 오르세 미술관이 더 재미있었다고 하더라고요. </p><p>그 이유는 루브르는 너무 넓고 보관하고 있는 작품의 수가 워낙 많아서 전체적으로 보기 힘들고&nbsp;</p><p>거기다 유명한 작품 앞에서는 사람들이 너무 많이 몰려서 원활한 작품 감상이 어렵다고! </p><p><br></p><p>반면에 오르세는 루브르만큼 사람이 많지도 규모가 크지 않아서 관람하기 좋고&nbsp;</p><p>유명한 인상파 화가들의 작품들이 많이 있어서 미술에 큰 관심이 없어도 즐거운 관람을 할 수 있다고 하더라고요. </p><p><br></p><p>그 후기를 듣고 이왕 루브르 박물관 보다는 오르세 미술관을 다녀오고 싶었는데!</p><p>패키지 일정에 원하는 오르세가 포함이라 너무 좋았어요~ </p><p><br></p><p>오르세 미술관은 과거 기차역을 개조하여 만든 미술관으로 일반적인 미술관과는 내부 구조가 달라요.</p><p> 독특한 내부구조도 인상적이었고 거기에 실제 고흐의 작품들을 눈 앞에서 볼 수 있어서 신기했어요. </p><p>미술사에 대해 잘 모르는 사람도 고흐는 다 알잖아요? 그 유명한 세계의 화가 작품을 볼 수 있어서 특별한 시간이었어요!</p><br><img src="../image/Tripa_1F02_1.jpg_20184728_114749.jpg&#10;" title="1F02_1.jpg"style="width:90%;"><br style="clear:both;"><br><p>낭만의 도시, 파리하면 가장 먼저 생각하는 건축물이 바로 에펠탑이죠!</p><p> 상상해왔던 에펠탑보다 실제로 보니 훨씬 크더라고요. 멀리서도 보이는 웅장한 모습에 설레면서 관광을 즐겼어요. </p><p>구스타브 에펠이 처음 에펠탑을 만들었을 당시엔 많은 사람들이 흉측하다고 말했대요. </p><p>지금은 프랑스여행을 대표하는 랜드마크로 손꼽히지만&nbsp;</p><p>그 당시에는 비난을 받았던 건축물이란 것이 설명을 듣는데도 믿기지 않았어요.&nbsp;</p><p><br></p><p>어떻게 이 아름다운 건축물이 비난을 받았는지! </p><p>아무리 생각을 해도 이해가 되지 않더라고요~ 실제로 마주하니 생각했던 것보다 더 멋졌는데 말이에요!</p><p><br></p><p>프랑스 여행기 1편은 여기까지만 쓸게요</p>') , 'tlatladkdk', 100, 1, 'F', '02', '18/01/05', '18/01/15');  
+
+
+--공지사항 등록
+--공지사항 등록
+INSERT INTO BOARD VALUES (0012, '여행리뷰 게시판 공지사항','18/09/05',null,'여행 리뷰 게시판은 다양한 여행 리뷰를 공유하는 게시판입니다.<br />
+자유롭게 여행 리뷰 글을 게시할 수 있습니다.<br /><br />
+
+아래와 같이 본 게시판에 부적합하다고 판단되는 게시글은 통지 없이 삭제될 수 있음을 알려드립니다.<br />
+- 특정인에 대한 비방 및 명예훼손의 우려가 있는 경우<br />
+- 상업적인 내용, 저작권을 침해할 수 있는 경우<br /> 
+- 저속한 용어를 사용하는 경우<br />
+- 청소년 유해매체물의 탑재나 광고<br />
+- 개인정보를 포함하고 있는 경우<br />
+- 유사?동일 내용을 반복적으로 게시하는 경우<br /> 
+- 이 외에 게시판의 성격과 맞지 않는 글을 게시한 경우<br />' ,'admin',30,0, null,null,null,null);
+INSERT INTO BOARD VALUES (0013, '여행리뷰 게시판 공지사항2 ','18/09/06',null,'공개하신 내용은 타인이 볼 수 있습니다. <br />
+본인 및 타인의 개인정보를 공개하거나 인권을 침해하는 내용이 없는지 확인해 주시기 바랍니다.<br /><br /> 
+- 타인의 개인정보를 정보주체의 동의 없이 취득하거나 공개하는 경우<br />
+- 인권을 침해하는 경우<br />
+- 타인의 저작권을 포함한 지적재산권 및 기타 권리를 침해하는 경우<br /> 
+관련법에 의해 처리될 수 있습니다.','admin',33,0, null,null,null,null);
+
+
+
+--게시판댓글
+--제주도1번 글에 대한 댓글
+INSERT INTO BOARD_COM VALUES (0001, 0001,'kkk333','삼대국수 나도 갔었는데 저기 진짜 숨겨진 맛집',10,'18/07/05',1,0,0001 );
+INSERT INTO BOARD_COM VALUES (0002, 0001,'ryqhansrh02','나도 다음학기 종강하자마자 제주도 가야지ㅜㅜ',10,'18/09/05',2,0,0001 );
+INSERT INTO BOARD_COM VALUES (0003, 0001,'abvvv11','렌트카 얼마에 빌리셨나요?ㅜㅜ차가 이ㅃㅓ서 궁금해요',10,'18/07/06',3,0,0001 );
+INSERT INTO BOARD_COM VALUES (0004, 0001,'qorhvk2','올레국수도 맛있는데ㅋㅋㅋㅋ다음엔 저기 가봐야겠다',10,'18/08/05',4,0,0001 );
+
+--제주도 2번 글에 대한 댓글 rkrkrk11(전도연)제외
+INSERT INTO BOARD_COM VALUES (0001, 0002, 'gywlsl441','덕분에 제주도 맛집 정보 알아갑니다',10,'18/10/05',1,0,0002 );
+INSERT INTO BOARD_COM VALUES (0002, 0002, 'qhdudqhdud','헐 사진 너무 이뻐요',10,'18/09/25',2,0,0002 );
+INSERT INTO BOARD_COM VALUES (0003, 0002, 'ekdlth','월정리 가고싶었는뎋ㅎㅎㅎ',10,'18/09/18',3,0,0002 );
+INSERT INTO BOARD_COM VALUES (0004, 0002, 'dkdlvhs','핑크뮬리 사진 대박이네',10,'18/09/11',4,0,0002 );
+INSERT INTO BOARD_COM VALUES (0005, 0002, 'tlatladkdk','맛집 정보 엄청 많닼ㅋㅋㅋ',10,'18/09/11',5,0,0002 );
+INSERT INTO BOARD_COM VALUES (0006, 0002, 'qhdudqhdud26','핑크뮬리 나도 가서 인생사진 찍어오고싶다',10,'18/09/11',6,0,0002 );
+INSERT INTO BOARD_COM VALUES (0007, 0002, 'enskqo234','신세이카이 맛있어보인닼ㅋㅋ',10,'18/09/10',7,0,0002 );
+INSERT INTO BOARD_COM VALUES (0008, 0002, 'kkk333','숙소는 어디 묵으셨나요??',10,'18/09/10',8,0,0002 );
+
+--제주도 3번 글에 대한 댓글   dlwpgns(이제훈)제외 18/10/06이후
+INSERT INTO BOARD_COM VALUES (0001, 0003, 'gywlsl441','덕분에 제주도 맛집 정보 알아갑니다',10,'18/10/07',1,0,0002 );
+INSERT INTO BOARD_COM VALUES (0002, 0003, 'qhdudqhdud','연정식당 나도 가봤는데 저기 진짜 맛있엌ㅋㅋ',10,'18/10/07',2,0,0002 );
+INSERT INTO BOARD_COM VALUES (0003, 0003, 'ekdlth','오설록은 진짜 사람 많아서 나도 구경 제대로 못했는데ㅜㅜ',10,'18/10/07',3,0,0002 );
+INSERT INTO BOARD_COM VALUES (0004, 0003, 'dkdlvhs','수영장 정보 좀 알려주세요ㅜ',10,'18/10/07',4,0,0002 );
+INSERT INTO BOARD_COM VALUES (0005, 0003, 'tlatladkdk','자매국수 존맛존맛',10,'18/10/07',5,0,0002 );
+INSERT INTO BOARD_COM VALUES (0006, 0003, 'qhdudqhdud26','전복돌솥비빔밥 정보 알고싶다ㅠㅠㅠㅠ',10,'18/10/07',6,0,0002 );
+INSERT INTO BOARD_COM VALUES (0007, 0003, 'enskqo234','김만복 김밥 난 그저그랬어......',10,'18/10/08',7,0,0002 );
+INSERT INTO BOARD_COM VALUES (0008, 0003, 'kkk333','숙소는 어디 묵으셨나요??',10,'18/10/08',8,0,0002 );
+
+--부산 (K03) 1, 아이디: kkk333(유재석), 조회수:38, 스크랩:10, 18/10/03~18/10/05 등록일: 18/10/15
+INSERT INTO BOARD_COM VALUES (0001, 0004, 'akdntm22','부산 당일치기 힘들지는 않았나요?',10,'18/10/16',1,0,0003 );
+INSERT INTO BOARD_COM VALUES (0002, 0004, 'enskqo234','김영상회 가보고싶네요',10,'18/10/16',2,0,0003 );
+INSERT INTO BOARD_COM VALUES (0003, 0004, 'qorhvk2','케이블카 시간 길었나요???',10,'18/10/17',3,0,0003 );
+INSERT INTO BOARD_COM VALUES (0004, 0004, 'gywlsl441','자갈치 시장 살만한거 많나요??',10,'18/10/17',4,0,0003 );
+INSERT INTO BOARD_COM VALUES (0005, 0004, 'dkssud4','드신거 맛있어 보여요',10,'18/10/17',5,0,0003 );
+
+--부산 (K03) 2, 아이디: dkssud4(강호동), 조회수:28, 스크랩:5, 18/03/03~18/03/05 등록일: 18/03/15
+INSERT INTO BOARD_COM VALUES (0001, 0005, 'ckdmsdn123','가까운 곳 여행 좋아요',10,'18/03/16',1,0,0005 );
+INSERT INTO BOARD_COM VALUES (0002, 0005, 'ryqhansrh02','렌트한 차 좋아보이네요',10,'18/03/16',2,0,0005 );
+INSERT INTO BOARD_COM VALUES (0003, 0005, 'dkdlvhs','조카랑 여행이라니 안 힘드셨나요?',10,'18/03/17',3,0,0005 );
+
+--천안 댓글 등록일: 18/05/05
+INSERT INTO BOARD_COM VALUES (0001, 0006, 'ckdmsdn123','저희 집이 천안 근천데, 뚜쥬르 한번도 아직 못 가봤어요 가봐야겠네요',10,'18/05/15',1,0,0006 );
+INSERT INTO BOARD_COM VALUES (0002, 0006, 'dkdlvhs','뚜쥬르 가고 싶어요',10,'18/05/25',2,0,0006 );
+
+--전주 댓글
+INSERT INTO BOARD_COM VALUES (0001, 0007, 'ckdmsdn123','그날의 온도 진짜 이쁘다',10,'18/05/15',1,0,0007 );
+
+--일본1 댓글
+INSERT INTO BOARD_COM VALUES (0001, 0009, 'abvvv11','여행 경비는 얼마들었나요?ㅜㅜㅜ',10,'18/02/10',1,0,0007 );
+INSERT INTO BOARD_COM VALUES (0002, 0009, 'dkdlvhs','자유여행 얼마들었어요?',10,'18/02/15',2,0,0007 );
+
+--일본2 댓글
+INSERT INTO BOARD_COM VALUES (0001, 0010, 'ryqhansrh02', '일본 10년전에 가보고 안가봤는데 가보고싶네요',10,'18/03/05',1,0,0010 );
+
+
+--해시태그
+--제주도 1번글 해시태그
+INSERT INTO HASHTAG VALUES (0001, 0001, '#제주도');
+INSERT INTO HASHTAG VALUES (0001, 0002, '#제주');
+INSERT INTO HASHTAG VALUES (0001, 0003, '#제주도여행');
+INSERT INTO HASHTAG VALUES (0001, 0004, '#종강여행');
+INSERT INTO HASHTAG VALUES (0001, 0005, '#삼대국수');
+INSERT INTO HASHTAG VALUES (0001, 0006, '#비바제트보트');
+INSERT INTO HASHTAG VALUES (0001, 0007, '#또가고싶어');
+INSERT INTO HASHTAG VALUES (0001, 0008, '#우도');
+INSERT INTO HASHTAG VALUES (0001, 0009, '#우도바다');
+INSERT INTO HASHTAG VALUES (0001, 0010, '#렌트카');
+
+--제주도 2번글 해시태그
+INSERT INTO HASHTAG VALUES (0002, 0001, '#베라체');
+INSERT INTO HASHTAG VALUES (0002, 0002, '#신세이카이');
+INSERT INTO HASHTAG VALUES (0002, 0003, '#카카듀');
+INSERT INTO HASHTAG VALUES (0002, 0004, '#월정리');
+INSERT INTO HASHTAG VALUES (0002, 0005, '#월정리갈비밥');
+INSERT INTO HASHTAG VALUES (0002, 0006, '#핑크뮬리');
+INSERT INTO HASHTAG VALUES (0002, 0007, '#흑돼지');
+INSERT INTO HASHTAG VALUES (0002, 0008, '#함덕해수욕장');
+INSERT INTO HASHTAG VALUES (0002, 0009, '#제주도');
+INSERT INTO HASHTAG VALUES (0002, 0010, '#제주');
+
+--제주도 3번글 해시태그
+INSERT INTO HASHTAG VALUES (0003, 0001, '#제주');
+INSERT INTO HASHTAG VALUES (0003, 0002, '#제주도');
+INSERT INTO HASHTAG VALUES (0003, 0003, '#제주맛집');
+INSERT INTO HASHTAG VALUES (0003, 0004, '#혼자여행');
+INSERT INTO HASHTAG VALUES (0003, 0005, '#여행');
+INSERT INTO HASHTAG VALUES (0003, 0006, '#오설록카페');
+INSERT INTO HASHTAG VALUES (0003, 0007, '#김만복식당');
+INSERT INTO HASHTAG VALUES (0003, 0008, '#바다다카페');
+
+--부산 1번글 해시태그
+INSERT INTO HASHTAG VALUES (0004, 0001, '#부산');
+INSERT INTO HASHTAG VALUES (0004, 0002, '#경상도');
+INSERT INTO HASHTAG VALUES (0004, 0003, '#당일치기');
+INSERT INTO HASHTAG VALUES (0004, 0004, '#가족여행');
+INSERT INTO HASHTAG VALUES (0004, 0005, '#자갈치수산시장');
+INSERT INTO HASHTAG VALUES (0004, 0006, '#케이블카');
+INSERT INTO HASHTAG VALUES (0004, 0007, '#이가네떡볶이');
+INSERT INTO HASHTAG VALUES (0004, 0008, '#김영상회');
+
+--부산 2번글 해시태그
+INSERT INTO HASHTAG VALUES (0005, 0001, '#부산');
+INSERT INTO HASHTAG VALUES (0005, 0002, '#당일치기');
+INSERT INTO HASHTAG VALUES (0005, 0003, '#조카랑여행');
+INSERT INTO HASHTAG VALUES (0005, 0004, '#렌트카');
+INSERT INTO HASHTAG VALUES (0005, 0005, '#소나타');
+
+--천안
+INSERT INTO HASHTAG VALUES (0006, 0001, '#충청도');
+INSERT INTO HASHTAG VALUES (0006, 0002, '#천안');
+INSERT INTO HASHTAG VALUES (0006, 0003, '#뚜쥬르');
+INSERT INTO HASHTAG VALUES (0006, 0004, '#청화집');
+INSERT INTO HASHTAG VALUES (0006, 0005, '#존맛');
+
+--전주
+INSERT INTO HASHTAG VALUES (0007, 0001, '#그날의온도');
+INSERT INTO HASHTAG VALUES (0007, 0002, '#감성카페');
+INSERT INTO HASHTAG VALUES (0007, 0003, '#전라도');
+INSERT INTO HASHTAG VALUES (0007, 0004, '#전주');
+
+--춘천
+INSERT INTO HASHTAG VALUES (0008, 0001, '#닭갈비');
+INSERT INTO HASHTAG VALUES (0008, 0002, '#존맛');
+INSERT INTO HASHTAG VALUES (0008, 0003, '#춘천');
+INSERT INTO HASHTAG VALUES (0008, 0004, '#강원도');
+
+--일본1
+INSERT INTO HASHTAG VALUES (0009, 0001, '#해외여행');
+INSERT INTO HASHTAG VALUES (0009, 0002, '#일본');
+INSERT INTO HASHTAG VALUES (0009, 0003, '#오사카');
+INSERT INTO HASHTAG VALUES (0009, 0004, '#교토');
+INSERT INTO HASHTAG VALUES (0009, 0005, '#고베');
+INSERT INTO HASHTAG VALUES (0009, 0006, '#존맛');
+INSERT INTO HASHTAG VALUES (0009, 0007, '#여행');
+
+--일본2
+INSERT INTO HASHTAG VALUES (0010, 0001, '#해외여행');
+INSERT INTO HASHTAG VALUES (0010, 0002, '#일본');
+INSERT INTO HASHTAG VALUES (0010, 0003, '#오사카');
+INSERT INTO HASHTAG VALUES (0010, 0004, '#교토');
+INSERT INTO HASHTAG VALUES (0010, 0005, '#고베');
+INSERT INTO HASHTAG VALUES (0010, 0006, '#꿀팁');
+INSERT INTO HASHTAG VALUES (0010, 0007, '#출장여행');
+
+--프랑스1
+INSERT INTO HASHTAG VALUES (0011, 0001, '#해외여행');
+INSERT INTO HASHTAG VALUES (0011, 0002, '#프랑스');
+INSERT INTO HASHTAG VALUES (0011, 0003, '#여행');
+
+
+--게시판 사진
+--제주1번
+INSERT INTO BPHOTO VALUES (0001,0001,'../image/Tripa_1K04_1.jpg_20181728_111711.jpg');
+INSERT INTO BPHOTO VALUES (0001,0002,'../image/Tripa_1K04_2.jpg_20181728_111719.jpg');
+INSERT INTO BPHOTO VALUES (0001,0003,'../image/Tripa_1K04_3.jpg_20181728_111730.jpg');
+INSERT INTO BPHOTO VALUES (0001,0004,'../image/Tripa_1K04_4.jpg_20181728_111738.jpg');
+INSERT INTO BPHOTO VALUES (0001,0005,'../image/Tripa_1K04_5.jpg_20181728_111746.jpg');
+
+--제주2번
+INSERT INTO BPHOTO VALUES (0002,0001,'../image/Tripa_2K04_1.jpg_20181928_111907.jpg');
+INSERT INTO BPHOTO VALUES (0002,0002,'../image/Tripa_2K04_2.jpg_20181928_111915.jpg');
+INSERT INTO BPHOTO VALUES (0002,0003,'../image/Tripa_2K04_3.jpg_20181928_111928.jpg');
+INSERT INTO BPHOTO VALUES (0002,0004,'../image/Tripa_2K04_4.jpg_20181928_111942.jpg');
+INSERT INTO BPHOTO VALUES (0002,0005,'../image/Tripa_2K04_5.jpg_20181928_111957.jpg');
+INSERT INTO BPHOTO VALUES (0002,0006,'../image/Tripa_2K04_6.jpg_20182028_112005.jpg');
+INSERT INTO BPHOTO VALUES (0002,0007,'../image/Tripa_2K04_7.jpg_20182028_112018.jpg');
+
+--제주3번
+INSERT INTO BPHOTO VALUES (0003,0001,'../image/Tripa_3K04_1.jpg_20182128_112116.jpg');
+INSERT INTO BPHOTO VALUES (0003,0002,'../image/Tripa_3K04_2.jpg_20182128_112123.jpg');
+INSERT INTO BPHOTO VALUES (0003,0003,'../image/Tripa_3K04_3.jpg_20182128_112132.jpg');
+INSERT INTO BPHOTO VALUES (0003,0004,'../image/Tripa_3K04_4.jpg_20182128_112141.jpg');
+INSERT INTO BPHOTO VALUES (0003,0005,'../image/Tripa_3K04_5.jpg_20182128_112155.jpg');
+INSERT INTO BPHOTO VALUES (0003,0006,'../image/Tripa_3K04_6.jpg_20182228_112201.jpg');
+INSERT INTO BPHOTO VALUES (0003,0007,'../image/Tripa_3K04_7.jpg_20182228_112208.jpg');
+INSERT INTO BPHOTO VALUES (0003,0008,'../image/Tripa_3K04_8.jpg_20182228_112213.jpg');
+
+--부산 1번
+INSERT INTO BPHOTO VALUES (0004,0001,'../image/Tripa_1K03_1.jpg_20182328_112351.jpg');
+INSERT INTO BPHOTO VALUES (0004,0002,'../image/Tripa_1K03_2.jpg_20182428_112402.jpg');
+INSERT INTO BPHOTO VALUES (0004,0003,'../image/Tripa_1K03_3.jpg_20182528_112538.jpg');
+INSERT INTO BPHOTO VALUES (0004,0004,'../image/Tripa_1K03_4.jpeg_20182528_112551.jpeg');
+INSERT INTO BPHOTO VALUES (0004,0005,'../image/Tripa_1K03_5.jpg_20182628_112601.jpg');
+
+--부산 2번
+INSERT INTO BPHOTO VALUES (0005,0001,'../image/Tripa_2K03_2.jpg_20182728_112710.jpg');
+INSERT INTO BPHOTO VALUES (0005,0002,'../image/Tripa_2K03_1.jpg_20182728_112701.jpg');
+INSERT INTO BPHOTO VALUES (0005,0003,'../image/Tripa_2K03_3.jpg_20182728_112718.jpg');
+INSERT INTO BPHOTO VALUES (0005,0004,'../image/Tripa_2K03_4.jpg_20182728_112725.jpg');
+INSERT INTO BPHOTO VALUES (0005,0005,'../image/Tripa_2K03_5.jpg_20182728_112738.jpg');
+
+--천안 
+INSERT INTO BPHOTO VALUES (0006,0001,'../image/Tripa_1K01_1.jpg_20182828_112840.jpg');
+INSERT INTO BPHOTO VALUES (0006,0002,'../image/Tripa_1K01_2.jpg_20182928_112910.jpg');
+INSERT INTO BPHOTO VALUES (0006,0003,'../image/Tripa_1K01_3.jpg_20182928_112916.jpg');
+INSERT INTO BPHOTO VALUES (0006,0004,'../image/Tripa_1K01_4.jpg_20182928_112924.jpg');
+
+--전주
+INSERT INTO BPHOTO VALUES (0007,0001,'../image/Tripa_1K02_1.jpg_20183028_113054.jpg');
+INSERT INTO BPHOTO VALUES (0007,0002,'../image/Tripa_1K02_4.jpg_20183128_113130.jpg');
+INSERT INTO BPHOTO VALUES (0007,0003,'../image/Tripa_1K02_3.jpeg_20183128_113149.jpeg');
+
+--춘천
+INSERT INTO BPHOTO VALUES (0008,0001,'../image/Tripa_1K05_1.jpg_20183328_113300.jpg');
+INSERT INTO BPHOTO VALUES (0008,0002,'../image/Tripa_1K05_2.jpg_20183328_113314.jpg');
+
+--일본1
+INSERT INTO BPHOTO VALUES (0009,0001,'../image/Tripa_1F01_1.jpg_20183428_113401.jpg');
+INSERT INTO BPHOTO VALUES (0009,0002,'../image/Tripa_1F01_2.jpg_20183428_113428.jpg');
+INSERT INTO BPHOTO VALUES (0009,0003,'../image/Tripa_1F01_3.jpg_20183428_113452.jpg');
+
+--일본2
+INSERT INTO BPHOTO VALUES (0010,0001,'../image/Tripa_2F01_1.jpg_20183928_113904.jpg');
+INSERT INTO BPHOTO VALUES (0010,0002,'../image/Tripa_2F01_3.jpg_20183928_113928.jpg');
+INSERT INTO BPHOTO VALUES (0010,0003,'../image/Tripa_2F01_2.jpg_20183828_113853.jpg');
+
+
+--프랑스1
+INSERT INTO BPHOTO VALUES (0011,0001,'../image/Tripa_1F02_3.jpg_20184928_114903.jpg');
+INSERT INTO BPHOTO VALUES (0011,0002,'../image/Tripa_1F02_2.jpg_20184728_114711.jpg');
+INSERT INTO BPHOTO VALUES (0011,0003,'../image/Tripa_1F02_1.jpg_20184728_114749.jpg');
+
+
+--숙소
+INSERT INTO ACCOM VALUES(1,'닉스 폭스 호텔','H','충청도 천안시 동남구 안서동 395-20','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','36.83759, 127.10023','<strong>연락</strong><br />문의전화:010-0475-5369<br /><br /> <strong>소개</strong><br />저희 호텔은 신축건물로 조용하고 깨끗합니다. <br />
+천안아산 KTX, SRT 역, 아산역 도보거리 8분에 위치하고 있어 대중교통 이용이 편합니다. <br />
+자동차 이용시 지하주차장 편리하게 이용 가능하십니다. <br />
+주변 유명한 곳은 독립기념관 온양온천, 워터파크,지중해마을이 있습니다. <br />',0.0,'K','01','../img2/K01_1.jpg');
+
+INSERT INTO ACCOM VALUES(2,'더 클래식 팬션','F','전라도 전주시 비비구 가리동 148-1','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','35.83632, 127.12162','<strong>연락</strong><br />문의전화:010-2535-6521<br /><br /> <strong>소개</strong><br />금마 저수지와 서동공원이 산책하기 좋은 곳이며<br />
+백제 무왕의 숨결이 서려있는 왕궁과 미륵사지 석탑등....하나 둘씩 옛모습을 찿아가는 곳입니다<br />
+전주한옥마을과는 40분, 월드컵경기장과는 20분....<br />
+전주와 군산여행의 중간 숙박하기 좋은곳입니다.<br />',0.0,'K','02','../img2/K02_1.jpg');
+
+INSERT INTO ACCOM VALUES(3,'코모도 팬션','F','경상도 대구시 서구 아햐동 34-48','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차, ATM<br />','35.84560, 128.66597','<strong>연락</strong><br />문의전화:010-1234-9965<br /><br /><strong>소개</strong><br />4년 연속 슈퍼호스트 선정이 보여주듯 저희는 청결함을 최우선으로 호텔식 화이트 침구를 비롯하여 보다 높은 만족도를 제공하기 위해 최선을 다하고 있습니다<br />
+또한 20층 이상 고층에서 바라보는 아름다운 해운대 비치뷰와 더불어 북유럽 스타일의 모던 인테리어에 고음질 사운드바를 설치하여 <br />
+고급스러운 분위기 속에서 편안한 휴식을 취하실 수 있도록 하였습니다<br />',0.0,'K','03','../img2/K03_1.jpg');
+
+INSERT INTO ACCOM VALUES(4,'호텔 리젠트 마린 더 블루','H','제주시 제주읍 한라동 1601-10','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','33.42954, 126.59479','<strong>연락</strong><br />문의전화:010-0269-8560<br /><br /><strong>소개</strong><br />저희는 요즘 가장 핫한 애월해안도로 고내포구 바로앞에 위치해 있으며 바다전망이 무척 뛰어나답니다. 운이 좋으면 돌고래떼를 보실수도 있습니다.<br />
+저희 숙소가 위치한 고내포구는 올레15코스 종착점이면서 16코스 시작점입니다. 해안으로 이어진 16코스는 아침에 가볍게 산책하시기에 좋습니다.<br />',0.0,'K','04','../img2/K04_1.jpg');
+
+INSERT INTO ACCOM VALUES(5,'더클래스300','H','강원도 인제군 인제읍 창천리 5-95','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','38.09214, 128.19188','<strong>연락</strong><br />문의전화:010-9536-5400<br /><br /> <strong>소개</strong><br />춘천 명동에서 도보로 5분 거리이며, 남춘천역에서 차로 5분 거리에 있어 대중교통을 이용하거나 자가용을 이용해도 편하게 이용할 수 있습니다. <br />
+춘천 명동의 닭갈비 골목이나 강대후문을 도보로 갈 수 있는 거리이므로, 자가용 이용시 지하주차장에 주차 후 이용하시면 편리합니다.<br />',0.0,'K','05','../img2/K05_1.jpg');
+
+INSERT INTO ACCOM VALUES(6,'Hotel Astil Dotonbori','H','OSAKA YUMESAI LINE 25-10','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','34.679383, 135.454294','<strong>소개</strong><br />이 숙소는 전문회사에 맏기고 있기때문에, 예약을 하시면 영어?중국어?한국어로 전문 컨시어지가 무료로 관광을 서포트해드립니다. <br />
+전차나 관광지를 전화나 메세지로 안내나, 추천식당의 안내, 예약하는 것도 가능합니다.<br />
+간사이의 관광지에 접근성이 좋은 위치에 쿄세라돔까지 300미터<br />',0.0,'F','01','../img2/F01_1.jpg');
+
+INSERT INTO ACCOM VALUES(7,'Hotel Tourisme Avenue','H','PARIS CHAILLOT 11-2','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','48.87198, 2.29400','<strong>소개</strong><br />파리 중심부, 지하철 R?aumur-S?bastopol (3 호선 및 4 호선)에서 도보로 1 분, 지하철 Strasbourg-Saint-Denis (8 호선 9 호선)에서 2 분, <br />
+지하철 Arts에서 도보로 5 분. 메티에 (11 호선). 2, 3 및 10 지구의 교차로.<br />',0.0,'F','02','../img2/F02_1.jpg');
+
+INSERT INTO ACCOM VALUES(8,'Blakemore Hyde Park','H','MANCHESTER ASHTON NEW RD 20-5','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','53.48378, -2.19986','<strong>소개</strong><br />런던에서의 경험을 원하신다면 Camden으로 오십시오.  <br />
+런던의이 지역은 카페, 바, 유명한 나이트 클럽, 음악 공연장, 세계적으로<br />
+유명한 캠든 마켓과 함께 아름다운 공원과 앵콜 로즈 (Primrose Hill)와 함께 중앙, 안전하고 포장되어 있습니다.<br />',0.0,'F','03','../img2/F03_1.jpg');
+
+INSERT INTO ACCOM VALUES(9,'Mercure Brasilia Lider Hotel','H','RIO DE JANEIRO CAMPO GRANDE 10','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','-22.88813, -43.56409','<strong>소개</strong><br />리오 데 자네이로를 방문하는 것보다 더 좋은 것은 없습니다. <br />
+브라질의 가장 유명한 해변 근처에서 코파카바나의 게스트 하우스에 머물러보십시오. <br />',0.0,'F','04','../img2/F04_1.jpg');
+
+INSERT INTO ACCOM VALUES(10,'Sanouva Danang Hotel','H','HANOI SSALDINK 10','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','21.03387, 105.84674','<strong>소개</strong><br />- 해변까지 도보로 200 미터 미만. <br />
+- 근처에 많은 훌륭한 해산물 레스토랑이 있습니다. <br />
+- 도심에서 3km, 호 이안에서 28km 떨어져 있습니다. <br />
+- 24/7 서비스. <br />
+',0.0,'F','05','../img2/F05_1.jpg');
+
+INSERT INTO ACCOM VALUES(11,'Harbour Grand Kowloon','H','SANGHAI JADING JIA 52','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','31.36955, 121.29544','<strong>소개</strong><br />10 분 이내에 3 개의 큰 공원까지 걸어갑니다. <br />
+맞은 편의 지구에는 24 시간 편의점을 비롯한 농장, 레스토랑 및 생활 서비스 지역이 있습니다. <br />
+길 건너편에는 지하철 역 근처의 다채로운 도시 쇼핑몰 인 까르푸 (Carrefour) 슈퍼마켓이 있습니다.<br />',0.0,'F','06','../img2/F06_1.jpg');
+
+INSERT INTO ACCOM VALUES(12,'GreenPoint Hotel Kissimmee','H','NEW YORK BROOKLIN CROWN HEIGHTS 3','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','40.66772, -73.94192','<strong>소개</strong><br />아늑하고 따뜻한 분위기로 실제 NY 경험을 찾는 여행객에게 적합합니다.<br />
+합리적인 가격으로 맨해튼 미드 타운에있는 최고의 호텔. <br />
+Hell Kitchen 유흥 시설, 레스토랑, 극장, 박물관의 중심부에 있습니다. <br />',0.0,'F','07','../img2/F07_1.jpg');
+
+INSERT INTO ACCOM VALUES(13,'Hotel Gat Point Charlie','H','FRANKFURT HEDDERNHEIM 7-7','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','50.15589, 8.64685','<strong>소개</strong><br />24/7 체크인 <br />
+체크 아웃시 짐을 맡겨 나중에 다시 가져올 수도 있습니다.<br /><br />
+다운 타운 도보 5 분 <br />
+FRANKFURT MESSE - 도보 15 분 이내의 무역 박람회<br /> 
+TAUNUSANLAGE STATION - 공항 직행 도보 7 분 <br />
+WESTEND 지하철역 200m<br />',0.0,'F','08','../img2/F08_1.jpg');
+
+INSERT INTO ACCOM VALUES(14,'Park Inn Amsterdam City West','H','DE KROMMERDT ANNE FRANK HUIS','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','52.37511, 4.88395','<strong>소개</strong><br />조용하고 평온한 곳.<br /> 
+암스테르담 중심에서 조금 벗어난 거리이기 때문에 <br />
+호텔에서 평화롭고 평온한 하루를 보내고 새와 물을 마시며 서늘한 곳에서 휴식을 취할 수 있습니다.<br />',0.0,'F','09','../img2/F09_1.jpg');
+
+INSERT INTO ACCOM VALUES(15,'Delta Hotels','H','OTTAWA ONTARIO KANATA 8','<strong>기능</strong><br />에어컨, 케이블TV, 건조기, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','45.29620, -75.89091','<strong>소개</strong><br />- 15 분거리의 다운타운까지 <br />
+- 15 분거리의 YOW (공항) <br />
+- 코스트코, LCBO, 레스토랑 등 2 분. <br />
+- 센트럴 바 하펜 (Central Barrhaven)까지 3 분<br />',0.0,'F','10','../img2/F10_1.jpg');
+
+INSERT INTO ACCOM VALUES(16,'Cadillac Hotel','H','충청도 천안시 동남구 안서동 395-20','<strong>기능</strong><br />에어컨, 케이블TV, 노트북 작업공간, 커피메이커, 침구, 무선인터넷, 헤어드라이기, 건물 내 무료 주차<br />','36.83759, 127.10023','<strong>연락</strong><br />문의전화:010-0475-1234<br /><br /><strong>소개</strong><br />호수와 바다, 서해의 낙조와 함께 <br />
+아름다운 뷰를 감상하실 수 있습니다.<br /><br />
+호텔 앞 평택호 공원과 산책길에서<br />
+자연을 느끼며 여유로운 하루를 즐겨보세요!<br />',0.0,'K','01','../img2/2K01_1.jpg');
+
+--스크랩
+INSERT INTO SCRAP VALUES('abcabc11','A',0001,NULL,1,1);
+
+INSERT INTO SCRAP VALUES('abcabc11','B',0001,0002,1,NULL);  
+INSERT INTO SCRAP VALUES('abcabc11','B',0002,0003,1,NULL);  
+INSERT INTO SCRAP VALUES('abcabc11','B',0003,0004,1,NULL);  
+INSERT INTO SCRAP VALUES('abcabc11','B',0004,0005,1,NULL);  
+
+INSERT INTO SCRAP VALUES('dkssud4','A' ,0001,NULL,1,1);
+INSERT INTO SCRAP VALUES('dkssud4','B' ,0001,0001,1,NULL);  
+
+INSERT INTO SCRAP VALUES('dkdlvhs90','A',0001,NULL,1,1);
+INSERT INTO SCRAP VALUES('dkdlvhs90','B',0001,0002,1,NULL);
+INSERT INTO SCRAP VALUES('dkdlvhs90','B' ,0002,0007,1,NULL);  
+
+INSERT INTO SCRAP VALUES('rkrkrk11','B' ,0001,0006,1,NULL);
+
+INSERT INTO SCRAP VALUES('abvvv11','B',0001,0007,1,NULL);
+INSERT INTO SCRAP VALUES('diadia22','B' ,0001,0007,1,NULL);  
+
+INSERT INTO SCRAP VALUES('qorhvk2','B',0001,0010,1,NULL);
+INSERT INTO SCRAP VALUES('qorhvk2','B',0002,0011,1,NULL);
+
+
+--객실 정보
+INSERT INTO ACCOM_INFO VALUES (1, 'Single', 3, '190101', '190103', 60000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (1, 'Double', 4, NULL, NULL, 80000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (1, 'Family', 5, '190203', '1902010', 100000, 'Y', 3);
+
+INSERT INTO ACCOM_INFO VALUES (2, 'Single', 2, NULL, NULL, 70000, 'N', 1);
+INSERT INTO ACCOM_INFO VALUES (2, 'Double', 3, NULL, NULL, 80000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (2, 'Family', 4, NULL, NULL, 90000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (3, 'Single', 2, NULL, NULL, 70000, 'N', 1);
+INSERT INTO ACCOM_INFO VALUES (3, 'Double', 3, '190301', '190310', 80000, 'Y', 2);
+INSERT INTO ACCOM_INFO VALUES (3, 'Family', 7, NULL, NULL, 90000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (4, 'Single', 5, '190401', '190402', 80000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (4, 'Double', 6, NULL, NULL, 100000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (4, 'Family', 7, NULL, NULL, 120000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (5, 'Single', 2, '190102', '190104', 100000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (5, 'Double', 4, NULL, NULL, 130000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (5, 'Family', 6, '190227', '190305', 160000, 'Y', 3);
+----------------------------------------------------------------------------------------------
+INSERT INTO ACCOM_INFO VALUES (6, 'Single', 3, '190101', '191010', 100000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (6, 'Double', 4, NULL, NULL, 140000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (6, 'Family', 5, NULL, NULL, 200000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (7, 'Single', 2, NULL, NULL, 170000, 'N', 1);
+INSERT INTO ACCOM_INFO VALUES (7, 'Double', 3, NULL, NULL, 180000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (7, 'Family', 4, '190303', '190401' , 190000, 'Y', 3);
+
+INSERT INTO ACCOM_INFO VALUES (8, 'Single', 1, '190102', '190105', 140000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (8, 'Double', 3, '190301', '190310', 180000, 'Y', 2);
+INSERT INTO ACCOM_INFO VALUES (8, 'Family', 5, NULL, NULL, 200000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (9, 'Single', 2, NULL, NULL, 120000, 'N', 1);
+INSERT INTO ACCOM_INFO VALUES (9, 'Double', 3, NULL, NULL, 140000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (9, 'Family', 4, NULL, NULL, 260000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (10, 'Single', 4, '190602', '190704', 100000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (10, 'Double', 6, NULL, NULL, 130000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (10, 'Family', 10, NULL, NULL, 150000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (11, 'Single', 2, NULL, NULL, 120000, 'N', 1);
+INSERT INTO ACCOM_INFO VALUES (11, 'Double', 4, NULL, NULL, 140000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (11, 'Family', 6, NULL, NULL, 160000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (12, 'Single', 2, '190125', '190130', 100000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (12, 'Double', 4, '181120', '181130', 200000, 'Y', 2);
+INSERT INTO ACCOM_INFO VALUES (12, 'Family', 6, '181201', '181228' , 300000, 'Y', 3);
+
+INSERT INTO ACCOM_INFO VALUES (13, 'Single', 2, '190408', '190415', 100000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (13, 'Double', 4, NULL, NULL, 120000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (13, 'Family', 6, NULL, NULL, 180000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (14, 'Single', 2, NULL, NULL, 120000, 'N', 1);
+INSERT INTO ACCOM_INFO VALUES (14, 'Double', 3, NULL, NULL, 140000, 'N', 2);
+INSERT INTO ACCOM_INFO VALUES (14, 'Family', 4, NULL, NULL, 160000, 'N', 3);
+
+INSERT INTO ACCOM_INFO VALUES (15, 'Single', 3, '190101', '190120', 70000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (15, 'Double', 5, '190101', '190110', 100000, 'Y', 2);
+INSERT INTO ACCOM_INFO VALUES (15, 'Family', 10, '190105', '190110', 150000, 'Y', 3);
+
+INSERT INTO ACCOM_INFO VALUES (16, 'Single', 3, '180101', '180102', 70000, 'Y', 1);
+INSERT INTO ACCOM_INFO VALUES (16, 'Double', 5, '180107', '180110', 890000, 'Y', 2);
+INSERT INTO ACCOM_INFO VALUES (16, 'Family', 10, '180205', '180210', 99000, 'Y', 3);
+
+--객실정보 사진
+
+--충청도
+INSERT INTO APHOTO VALUES (1,1,'../img2/K01_2.jpg');
+INSERT INTO APHOTO VALUES (1,2,'../img2/K01_3.jpg');
+INSERT INTO APHOTO VALUES (1,3,'../img2/K01_4.jpg');
+--전라도
+INSERT INTO APHOTO VALUES (2,1,'../img2/K02_2.jpg');
+INSERT INTO APHOTO VALUES (2,2,'../img2/K02_3.jpg');
+INSERT INTO APHOTO VALUES (2,3,'../img2/K02_4.jpg');
+--경상도
+INSERT INTO APHOTO VALUES (3,1,'../img2/K03_2.jpg');
+INSERT INTO APHOTO VALUES (3,2,'../img2/K03_3.jpg');
+INSERT INTO APHOTO VALUES (3,3,'../img2/K03_4.jpg');
+--제주도
+INSERT INTO APHOTO VALUES (4,1,'../img2/K04_2.jpg');
+INSERT INTO APHOTO VALUES (4,2,'../img2/K04_3.jpg');
+INSERT INTO APHOTO VALUES (4,3,'../img2/K04_4.jpg');
+--강원도
+INSERT INTO APHOTO VALUES (5,1,'../img2/K05_2.jpg');
+INSERT INTO APHOTO VALUES (5,2,'../img2/K05_3.jpg');
+INSERT INTO APHOTO VALUES (5,3,'../img2/K05_4.jpg');
+--일본
+INSERT INTO APHOTO VALUES (6,1,'../img2/F01_2.jpg');
+INSERT INTO APHOTO VALUES (6,2,'../img2/F01_3.jpg');
+INSERT INTO APHOTO VALUES (6,3,'../img2/F01_4.jpg');
+--프랑스
+INSERT INTO APHOTO VALUES (7,1,'../img2/F02_2.jpg');
+INSERT INTO APHOTO VALUES (7,2,'../img2/F02_3.jpg');
+INSERT INTO APHOTO VALUES (7,3,'../img2/F02_4.jpg');
+--영국
+INSERT INTO APHOTO VALUES (8,1,'../img2/F03_2.jpg');
+INSERT INTO APHOTO VALUES (8,2,'../img2/F03_3.jpg');
+INSERT INTO APHOTO VALUES (8,3,'../img2/F03_4.jpg');
+--브라질
+INSERT INTO APHOTO VALUES (9,1,'../img2/F04_2.jpg');
+INSERT INTO APHOTO VALUES (9,2,'../img2/F04_3.jpg');
+INSERT INTO APHOTO VALUES (9,3,'../img2/F04_4.jpg');
+--베트남
+INSERT INTO APHOTO VALUES (10,1,'../img2/F05_2.jpg');
+INSERT INTO APHOTO VALUES (10,2,'../img2/F05_3.jpg');
+INSERT INTO APHOTO VALUES (10,3,'../img2/F05_4.jpg');
+--중국
+INSERT INTO APHOTO VALUES (11,1,'../img2/F06_2.jpg');
+INSERT INTO APHOTO VALUES (11,2,'../img2/F06_3.jpg');
+INSERT INTO APHOTO VALUES (11,3,'../img2/F06_4.jpg');
+--미국
+INSERT INTO APHOTO VALUES (12,1,'../img2/F07_2.jpg');
+INSERT INTO APHOTO VALUES (12,2,'../img2/F07_3.jpg');
+INSERT INTO APHOTO VALUES (12,3,'../img2/F07_4.jpg');
+--독일
+INSERT INTO APHOTO VALUES (13,1,'../img2/F08_2.jpg');
+INSERT INTO APHOTO VALUES (13,2,'../img2/F08_3.jpg');
+INSERT INTO APHOTO VALUES (13,3,'../img2/F08_4.jpg');
+--네덜란드
+INSERT INTO APHOTO VALUES (14,1,'../img2/F09_2.jpg');
+INSERT INTO APHOTO VALUES (14,2,'../img2/F09_3.jpg');
+INSERT INTO APHOTO VALUES (14,3,'../img2/F09_4.jpg');
+
+--캐나다
+INSERT INTO APHOTO VALUES (15,1,'../img2/F10_2.jpg');
+INSERT INTO APHOTO VALUES (15,2,'../img2/F10_3.jpg');
+INSERT INTO APHOTO VALUES (15,3,'../img2/F10_4.jpg');
+
+--천안2
+INSERT INTO APHOTO VALUES (16,1,'../img2/2K01_2.jpg');
+INSERT INTO APHOTO VALUES (16,2,'../img2/2K01_3.jpg');
+INSERT INTO APHOTO VALUES (16,3,'../img2/2K01_4.jpg');
+
+--예약테이블
+
+--예약날짜 지남
+--1
+INSERT INTO RESERVATION VALUES (1, 'Single', 1, '180103', '180101', 'abc@korea.com', '싱글룸 예약이 완료되었습니다.', 'abcabc11', '조인성', '010-1111-1111', '0',0);
+INSERT INTO RESERVATION VALUES (1, 'Double', 2, '180210', '180203', 'abc@korea.com', '싱글룸 예약이 완료되었습니다.', 'abcabc11', '조인성', '010-1111-1111', '0',0);
+INSERT INTO RESERVATION VALUES (1, 'Single', 3, '180103', '180101', 'qorhvk2@good.com', '싱글룸 예약이 완료되었습니다.', 'qorhvk2', '박보검', '010-1111-5555', '0',0);  
+INSERT INTO RESERVATION VALUES (1, 'Single', 4, '180103', '180101', 'dkssud4@korea.com', '싱글룸 예약이 완료되었습니다.', 'dkssud4', '강호동', '010-1111-3333', '0',0);  
+INSERT INTO RESERVATION VALUES (1, 'Single', 5, '180103', '180101', 'wlqrkffo1@korea.com', '싱글룸 예약이 완료되었습니다.', 'wlqrkffo1', '강동원', '010-1111-4444', '0',0);  
+
+--2
+INSERT INTO RESERVATION VALUES (2, 'Single', 1, '180103', '180101', 'kkk333@korea.com', '싱글룸 예약이 완료되었습니다.', 'kkk333', '유재석', '010-1111-2222', '0',0);  
+
+--3
+INSERT INTO RESERVATION VALUES (3, 'Family', 1, '180310', '180301', 'kkk333@korea.com', '패밀리룸 예약이 완료되었습니다.', 'kkk333', '유재석', '010-1111-2222', '0',0);
+INSERT INTO RESERVATION VALUES (3, 'Family', 2, '180310', '180301', 'ryqhansrh02@good.com', '패밀리룸 예약이 완료되었습니다.', 'ryqhansrh02', '정유미', '010-1111-0000', '0',0);
+
+--4
+INSERT INTO RESERVATION VALUES (4, 'Single', 1, '180103', '180101', 'enskqo234@good.com', '싱글룸 예약이 완료되었습니다.', 'enskqo234', '배두나', '010-1246-2356', '0',0);  
+
+--5
+INSERT INTO RESERVATION VALUES (5, 'Single', 1, '180103', '180101', 'qorhvk2@good.com', '싱글룸 예약이 완료되었습니다.', 'qorhvk2', '박보검', '010-1111-5555', '0',0);  
+
+--6
+INSERT INTO RESERVATION VALUES (6, 'Single', 1, '180103', '180101', 'qhdudqhdud26@good.com', '싱글룸 예약이 완료되었습니다.', 'qhdudqhdud', '이보영', '010-7845-8888', '0',0);  
+
+--7
+INSERT INTO RESERVATION VALUES (7, 'Single', 1, '180103', '180101', 'diadia22@good.com', '싱글룸 예약이 완료되었습니다.', 'diadia22', '송혜교', '010-1111-6666', '0',0);  
+
+--8
+INSERT INTO RESERVATION VALUES (8, 'Single', 1, '180103', '180101', 'rkrkrk11@good.com', '싱글룸 예약이 완료되었습니다.', 'rkrkrk11', '전도연', '010-1111-8888', '0',0);  
+
+--9
+INSERT INTO RESERVATION VALUES (9, 'Single', 1, '180103', '180101', 'abc@korea.com', '싱글룸 예약이 완료되었습니다.', 'abcabc11', '조인성', '010-1111-1111', '0',0);  
+
+--10
+INSERT INTO RESERVATION VALUES (10, 'Single', 1, '180103', '180101', 'dkdlvhs90@good.com', '싱글룸 예약이 완료되었습니다.', 'dkdlvhs90', '손예진', '010-1111-9999', '0',0);  
+
+--11
+INSERT INTO RESERVATION VALUES (11, 'Single', 1, '180103', '180101', 'dkdlvhs90@good.com', '싱글룸 예약이 완료되었습니다.', 'dkdlvhs90', '손예진', '010-1111-9999', '0',0);  
+
+--12
+INSERT INTO RESERVATION VALUES (12, 'Single', 1, '180103', '180101', 'ckdmsdn123@korea.com', '싱글룸 예약이 완료되었습니다.', 'ckdmsdn123', '차은우', '010-1561-3472', '0',0);  
+INSERT INTO RESERVATION VALUES (12, 'Single', 2, '180103', '180101', 'ekdlth@korea.com', '싱글룸 예약이 완료되었습니다.', 'ekdlth', '서강준', '010-2346-4858', '0',0);  
+INSERT INTO RESERVATION VALUES (12, 'Single', 3, '180103', '180101', 'gywlsl441@good.com', '싱글룸 예약이 완료되었습니다.', 'gywlsl441', '공효진', '010-1845-0340', '0',0);  
+
+--13
+INSERT INTO RESERVATION VALUES (13, 'Single', 1, '180103', '180101', 'akdntm22@korea.com', '싱글룸 예약이 완료되었습니다.', 'akdntm22', '봉준호', '010-1111-3333', '0',0);  
+INSERT INTO RESERVATION VALUES (13, 'Single', 2, '180103', '180101', 'gotngotn57@good.com', '싱글룸 예약이 완료되었습니다.', 'gotngotn57', '김혜수', '010-1131-8643', '0',0);  
+INSERT INTO RESERVATION VALUES (13, 'Single', 3, '180103', '180101', 'dlwpgns2@good.com', '싱글룸 예약이 완료되었습니다.', 'dlwpgns', '이제훈', '010-3462-5355', '0',0);  
+
+--14
+INSERT INTO RESERVATION VALUES (14, 'Single', 1, '180103', '180101', 'tlatladkdk@good.com', '싱글룸 예약이 완료되었습니다.', 'tlatladkdk', '한예리', '010-1124-9745', '0',0);  
+INSERT INTO RESERVATION VALUES (14, 'Single', 2, '180103', '180101', 'abvvv11@good.com', '싱글룸 예약이 완료되었습니다.', 'abvvv11', '전지현', '010-1111-7777', '0',0);  
+
+--15
+INSERT INTO RESERVATION VALUES (15, 'Single', 1, '180103', '180101', 'enskqo234@good.com', '싱글룸 예약이 완료되었습니다.', 'enskqo234', '배두나', '010-1246-2356', '0',0);  
+INSERT INTO RESERVATION VALUES (15, 'Single', 2, '180103', '180101', 'qhdudqhdud26@good.com', '싱글룸 예약이 완료되었습니다.', 'qhdudqhdud', '이보영', '010-7845-8888', '0',0);  
+INSERT INTO RESERVATION VALUES (15, 'Single', 3, '180103', '180101', 'wlqrkffo1@korea.com', '싱글룸 예약이 완료되었습니다.', 'wlqrkffo1', '강동원', '010-1111-4444', '0',0);  
+
+--16
+INSERT INTO RESERVATION VALUES (16, 'Single', 1, '180103', '180101', 'diadia22@good.com', '싱글룸 예약이 완료되었습니다.', 'diadia22', '송혜교', '010-1111-6666', '0',0);  
+INSERT INTO RESERVATION VALUES (16, 'Single', 2, '180103', '180101', 'wlqrkffo1@korea.com', '싱글룸 예약이 완료되었습니다.', 'wlqrkffo1', '강동원', '010-1111-4444', '0',0);  
+INSERT INTO RESERVATION VALUES (16, 'Single', 3, '180103', '180101', 'dkssud4@korea.com', '싱글룸 예약이 완료되었습니다.', 'dkssud4', '강호동', '010-1111-3333', '0',0);  
+
+--예약날짜 안지남
+INSERT INTO RESERVATION VALUES (1, 'Single', 6, '190103', '190101', 'abc@korea.com', '싱글룸 예약이 완료되었습니다.', 'abcabc11', '조인성', '010-1111-1111', '0',0);
+INSERT INTO RESERVATION VALUES (1, 'Double', 7, '190210', '190203', 'abc@korea.com', '싱글룸 예약이 완료되었습니다.', 'abcabc11', '조인성', '010-1111-1111', '0',0);
+INSERT INTO RESERVATION VALUES (3, 'Family', 3, '190310', '190301', 'kkk333@korea.com', '패밀리룸 예약이 완료되었습니다.', 'kkk333', '유재석', '010-1111-2222', '0',0);
+INSERT INTO RESERVATION VALUES (4, 'Single', 2, '190402', '190401', 'kkk333@korea.com', '싱글룸 예약이 완료되었습니다.', 'kkk333', '유재석', '010-1111-2222', '0',0);
+INSERT INTO RESERVATION VALUES (5, 'Double', 2, '190104', '190102', 'dkssud4@korea.com', '싱글룸 예약이 완료되었습니다.', 'dkssud4', '강호동', '010-1111-3333', '0',0);
+INSERT INTO RESERVATION VALUES (5, 'Family', 3, '190305', '190227', 'dkssud4@korea.com', '패밀리룸 예약이 완료되었습니다.', 'dkssud4', '강호동', '010-1111-3333', '0',0);
+INSERT INTO RESERVATION VALUES (6, 'Single', 2, '190101', '190101', 'abvvv11@good.com', '싱글룸 예약이 완료되었습니다.', 'abvvv11', '전지현','010-1111-7777', '0',0);
+INSERT INTO RESERVATION VALUES (7, 'Double', 2, '190401', '190303', 'abvvv11@good.com', '싱글룸 예약이 완료되었습니다.', 'abvvv11', '전지현','010-1111-7777', '0',0);
+INSERT INTO RESERVATION VALUES (8, 'Single', 2, '190105', '190102', 'rkrkrk11@good.com', '싱글룸 예약이 완료되었습니다.', 'rkrkrk11', '전도연','010-1111-8888', '0',0);
+INSERT INTO RESERVATION VALUES (8, 'Double', 3, '190310', '190301', 'rkrkrk11@good.com', '싱글룸 예약이 완료되었습니다.', 'rkrkrk11', '전도연','010-1111-8888', '0',0);
+INSERT INTO RESERVATION VALUES (10, 'Single', 2, '190704', '190602', 'dkdlvhs90@good.com', '싱글룸 예약이 완료되었습니다.', 'dkdlvhs90', '손예진','010-1111-9999', '0',0);
+INSERT INTO RESERVATION VALUES (12, 'Single', 4, '190130', '190125', 'ryqhansrh02@good.com', '싱글룸 예약이 완료되었습니다.', 'ryqhansrh02', '정유미','010-1111-0000', '0',0);
+INSERT INTO reservation VALUES (12, 'Double', 5, '181130', '181120','diadia22@good.com','싱글룸 예약이 완료되었습니다.','diadia22', '송혜교','010-1111-6666', '0',0);
+INSERT INTO reservation VALUES (12, 'Family', 6, '181218', '181213' ,'diadia22@good.com','패밀리룸 예약이 완료되었습니다.','diadia22', '송혜교','010-1111-6666', '0',0);
+INSERT INTO reservation VALUES (13, 'Single', 4, '190418', '190415','qorhvk2@good.com','싱글룸 예약이 완료되었습니다.','qorhvk2','박보검', '010-1111-5555', '0',0);
+INSERT INTO reservation VALUES (15, 'Single', 4, '190418', '190415','qorhvk2@good.com','싱글룸 예약이 완료되었습니다.','qorhvk2','박보검', '010-1111-5555', '0',0);
+INSERT INTO reservation VALUES (15, 'Double', 5, '190111', '190110','wlqrkffo1@korea.com','더블룸 예약이 완료되었습니다.','wlqrkffo1','강동원','010-1111-4444', '0',0);
+INSERT INTO reservation VALUES (15, 'Family', 6, '190115', '190110','wlqrkffo1@korea.com','패밀리룸 예약이 완료되었습니다.','wlqrkffo1','강동원','010-1111-4444', '0',0);
+INSERT INTO reservation VALUES (16, 'Single', 4, '180101', '180102','diadia22@good.com','싱글룸 예약이 완료되었습니다.','diadia22','송혜교', '010-1111-6666', '0',0);
+INSERT INTO reservation VALUES (16, 'Double', 5, '180107', '180110','wlqrkffo1@korea.com','더블룸 예약이 완료되었습니다.','wlqrkffo1','강동원','010-1111-4444', '0',0);
+INSERT INTO reservation VALUES (16, 'Family', 6, '180205', '180210','dkssud4@korea.com','패밀리룸 예약이 완료되었습니다.','dkssud4','강호동','010-1111-3333', '0',0);
+
+
+--숙소 후기
+INSERT INTO ACCOM_COM VALUES(1,'abcabc11','너무 깔끔하고 서비스가 좋아요. 사장님이 너무 친절하시고 역에서 가깝고 좋았습니다. 다음에는 가족들과 함께 오고 싶어요!!',4,100,0001);
+INSERT INTO ACCOM_COM VALUES(1,'abcabc11','다음에 여행오면 꼭 다시 이용하고 싶어요. 주변에 맛집도 많고 사장님이 너무 잘해주셔서 편하게 쉬다가 갑니다~~ 지인들에게 꼭 추천하고 싶은 숙소에요 ㅎㅎㅎㅎ',3,100,0002);
+INSERT INTO ACCOM_COM VALUES(1,'qorhvk2','다음에 여행오면 꼭 다시 이용하려고여 ㅎ 화장실이 조금 비좁긴 하였지만 그래도 아주 만족스러운 숙소였어여 ㅎㅎ',4,100,0003);
+INSERT INTO ACCOM_COM VALUES(1,'dkssud4','너무 깔끔하고 서비스가 좋아요. 가격도 저렴하고 사장님도 친절하시고 여러모로 잘 쉬다갑니다~! 다음에 또 다시 갈게요 사장님~~',4,100,0004);
+INSERT INTO ACCOM_COM VALUES(1,'wlqrkffo1','수영장이 있어서 재밌게 놀았어요 ㅎㅎ 가족여행으로 갔는데 아이들이 너무 즐겁게 놀아서 흐뭇하네요!! 아이들이나 반려견과 함께 오실 가족들에게 딱 맞는 숙소인 것 같아요~',4,100,0005);
+
+INSERT INTO ACCOM_COM VALUES(2,'kkk333','숙소가 생각보다 작았지만 숙소내부는 깨끗하고 깔끔해요. 넓은 숙소를 찾으시는분들에게는 별로 일 수도 있는 호불호가 조금 갈리는 숙소였어요~ 하지만 사장님은 친절하셔서 다음에 또 오고 싶네요~~~',3,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(3,'kkk333','주인 아저씨가 친절하셔서 편하게 놀다와요. 볼거리도 주변에 많고 주차할 공간도 넓어서 아무 걱정 없이 쉬다 가요. 주차에 어려움을 겪으시는 분들에게 알맞는 숙소인 것 같아요.',5,100,0001);
+INSERT INTO ACCOM_COM VALUES(3,'ryqhansrh02','주인 아저씨가 친절하셔서 편하게 놀다와요!! 숙소도 생각했던 것보다 매우 넓고 화장실도 너무 깨끗했어요!!! 강추!!!',5,100,0002);
+ 
+INSERT INTO ACCOM_COM VALUES(4,'enskqo234','그럭 저럭 적당한 가격에 무난한 호텔이네요. 나쁘지않은 시설이라 추천까진 아니어도 하루정도 묵어도 괜찮아요',3,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(5,'qorhvk2','적립금모아서 또 가고 싶어요. 돈내고 가기는 조금 망설여지지만 주변에 볼거리가 많고 역에서 가까운 장점이 있는 숙소에요~',3,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(6,'qhdudqhdud','천안에 놀거리도 많아서 천안 1박2일로 계획짜실 때 좋은 숙소 같아요~! 위치도 번화가와 가까워서 편했어요~',5,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(7,'diadia22','평가보다 별로 깨끗하지 않아서 추천은 안함;; 사진보고 예약하셨다면 마음의 준비를 하셔야 할듯...',2,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(8,'rkrkrk11','체크인부터 꼬여서 시간 오래걸리고 여행 기분망쳤어요.....ㅠㅠ 숙소도 생각보다 너무 지저분하고 사장님도 너무 불친절하셔요... 다음 여행은 성공적이길...(또르르)',1,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(9,'abcabc11','방 조명이 아늑하고 좋았어요. 푹 쉬고 와서 피로가 싹 풀렸어요. 가성비 괜찮아서 추천합니다.',5,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(10,'dkdlvhs90','석양이 잘보여서 개꿀!!!! 숙소에서 5분만 걸어나가면 석양 볼 수 있어요~ 숙소 위치 대박..!!! 석양 보시구 싶으신 분들에게 딱이에요!',4,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(11,'dkdlvhs90','숙소에서 보는 야경이 장관~~ 중국은 야경을 잘 꾸며놔서 여기 오시면 꼭 보시길 추천드립니다~',4,100,0001);
+
+INSERT INTO ACCOM_COM VALUES(12,'ckdmsdn123','명절에 뉴욕가서 푹 쉬고 쇼핑도 잘 하다가 왔어요. 뉴욕치고는 가격도 저렴하고 조식도 나와서 대만족이었습니다.',5,100,0001);
+INSERT INTO ACCOM_COM VALUES(12,'ekdlth','뉴욕 5박6일 여행하면서 숙소를 3곳에서 묵었는데 여기가 제일 만족도가 높았어요 가성비나 다른부분 비교해도 여기가 제일 나았어요 ',5,100,0002);
+INSERT INTO ACCOM_COM VALUES(12,'gywlsl441','가격도 저렴하고 안전한 숙소 였어요. 사실 가기전에 총기사고 걱정도 많이 했는데 별일없었고 밤에도 안전했어요.',5,100,0003);
+
+INSERT INTO ACCOM_COM VALUES(13,'akdntm22','차붐 빼면 특별한게 없었네요. 한국어나 영어 가능한 스태프가 없어서 조금 고생했습니다. 화장실도 깨끗하고 시설이 전체적으로 깔끔합니다',3,100,0001);
+INSERT INTO ACCOM_COM VALUES(13,'gotngotn57','옥토버 페스트에 맞춰 가면 매니저님이 안내 잘 해주실겁니다. 한국어 가능한 분이셔서 여러가지 유용한 팁들을 주십니다.독어나 영어 못하시면 추천드립니다.',5,100,0002);
+INSERT INTO ACCOM_COM VALUES(13,'dlwpgns','숙소도 동네 건물들도 참 예쁘네요. 뭐랄까 진짜 유럽에 있구나 하는 느낌이 들더군요. 나중에 이런 호텔지어서 운영하고 싶어질정도로요 ㅎㅎ',5,100,0003);
+
+INSERT INTO ACCOM_COM VALUES(14,'tlatladkdk','외진 곳에 있어서 밤늦게 돌아다니는 건 비추! 숙박료는 싼데 교통비가 많이 들어서 그렇게 싸다는 느낌은 안 들어서 비추합니다. ',3,100,0001);
+INSERT INTO ACCOM_COM VALUES(14,'abvvv11','도심 바깥이라 스케쥴 잘 짜서오세요. 저는 버스에서 시간 낭비를 많이 해서 여행이 피곤했어요. 시설은 좋은데 위치가  여행하기 좀 불편해요',2,100,0002);
+
+INSERT INTO ACCOM_COM VALUES(15,'enskqo234','이번 여행 중 제일 좋았어요~! 방내부 인테리어 색감이나 가구들이 참 맘에 들어서 가져오고 싶을 정도였어요.한국에도 있으면 호캉스로 가고 싶어요 ',5,100,0001);
+INSERT INTO ACCOM_COM VALUES(15,'qhdudqhdud','스탠리컵 직후에는 난동이 일어나서 엄청 위험했어요. 도심에 있는 호텔이라 세련되고 멋스러웠습니다. 조식도 맛있고 양도 적당해서 이곳 추천드립니다.',5,100,0002);
+INSERT INTO ACCOM_COM VALUES(15,'wlqrkffo1','도심 속에 있어서 스케쥴 짜기 편했네요',5,100,0003);
+
+INSERT INTO ACCOM_COM VALUES(16,'diadia22','호텔 진짜 이쁨!!! 이런 호텔 짓고 싶더라구요. 누가 지었나 정말 잘 꾸며놨더군요.인테리어도 공들인 티가 팍팍 나고 너무 좋았어요',4,100,0001);
+INSERT INTO ACCOM_COM VALUES(16,'wlqrkffo1','다음에 여행오면 꼭 다시 이용하고 싶어요. 조식도 부담없고 맛있고 조식이 제일 기억에 남아요.아침 잘 챙겨드시는 분들에겐 강추!!!',3,100,0002);
+INSERT INTO ACCOM_COM VALUES(16,'dkssud4','데스크 직원분들 진짜 친절하고 좋았어요. 그리고 호텔도 이쁨! 우리나라에도 이렇게 예쁜곳이 있는줄은 몰랐는데 다들 한번 꼭 가보세요',4,100,0003);
+
+
+--ACPHOTO
+--1
+INSERT INTO ACPHOTO VALUES(1,'abcabc11',0001,'../img2/AC01.jpg');
+INSERT INTO ACPHOTO VALUES(1,'abcabc11',0002,'../img2/AC02.jpg');
+INSERT INTO ACPHOTO VALUES(1,'qorhvk2',0003,'../img2/AC03.jpg');
+INSERT INTO ACPHOTO VALUES(1,'qorhvk2',0004,'../img2/AC04.jpg');
+INSERT INTO ACPHOTO VALUES(1,'wlqrkffo1',0005,'../img2/AC05.jpg');
+--2
+INSERT INTO ACPHOTO VALUES(2,'kkk333',0001,'../img2/AC06.jpg');
+--3
+INSERT INTO ACPHOTO VALUES(3,'kkk333',0001,'../img2/AC07.jpg');
+INSERT INTO ACPHOTO VALUES(3,'ryqhansrh02',0002,'../img2/AC08.jpg');
+--4
+INSERT INTO ACPHOTO VALUES(4,'enskqo234',0001,'../img2/AC09.jpg');
+--5
+INSERT INTO ACPHOTO VALUES(5,'qorhvk2',0001,'../img2/AC10.jpg');
+--6
+INSERT INTO ACPHOTO VALUES(6,'qhdudqhdud',0001,'../img2/AC11.jpg');
+--7
+INSERT INTO ACPHOTO VALUES(7,'diadia22',0001,'../img2/AC13.jpg');
+--8
+INSERT INTO ACPHOTO VALUES(8,'rkrkrk11',0001,'../img2/AC14.jpg');
+--9
+INSERT INTO ACPHOTO VALUES(9,'abcabc11',0001,'../img2/AC01.jpg');
+--10
+INSERT INTO ACPHOTO VALUES(10,'dkdlvhs90',0001,'../img2/AC02.jpg');
+--11
+INSERT INTO ACPHOTO VALUES(11,'dkdlvhs90',0001,'../img2/AC03.jpg');
+--12
+INSERT INTO ACPHOTO VALUES(12,'ckdmsdn123',0001,'../img2/AC04.jpg');
+INSERT INTO ACPHOTO VALUES(12,'ekdlth',0002,'../img2/AC05.jpg');
+INSERT INTO ACPHOTO VALUES(12,'gywlsl441',0003,'../img2/AC06.jpg');
+--13
+INSERT INTO ACPHOTO VALUES(13,'akdntm22',0001,'../img2/AC07.jpg');
+INSERT INTO ACPHOTO VALUES(13,'gotngotn57',0002,'../img2/AC08.jpg');
+INSERT INTO ACPHOTO VALUES(13,'dlwpgns',0003,'../img2/AC09.jpg');
+--14
+INSERT INTO ACPHOTO VALUES(14,'tlatladkdk',0001,'../img2/AC10.jpg');
+INSERT INTO ACPHOTO VALUES(14,'abvvv11',0002,'../img2/AC11.jpg');
+--15
+INSERT INTO ACPHOTO VALUES(15,'enskqo234',0001,'../img2/AC12.jpg');
+INSERT INTO ACPHOTO VALUES(15,'qhdudqhdud',0002,'../img2/AC13.jpg');
+INSERT INTO ACPHOTO VALUES(15,'wlqrkffo1',0003,'../img2/AC14.jpg');
+--16
+INSERT INTO ACPHOTO VALUES(16,'diadia22',0001,'../img2/AC01.jpg');
+INSERT INTO ACPHOTO VALUES(16,'wlqrkffo1',0002,'../img2/AC02.jpg');
+INSERT INTO ACPHOTO VALUES(16,'dkssud4',0003,'../img2/AC03.jpg');
+
+		
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=1) where accom_no=1;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=2) where accom_no=2;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=3) where accom_no=3;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=4) where accom_no=4;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=5) where accom_no=5;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=6) where accom_no=6;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=7) where accom_no=7;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=8) where accom_no=8;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=9) where accom_no=9;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=10) where accom_no=10;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=11) where accom_no=11;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=12) where accom_no=12;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=13) where accom_no=13;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=14) where accom_no=14;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=15) where accom_no=15;
+update accom set accom_rat = (select sum(accom_rat)/count(*) from accom_com where accom_no=16) where accom_no=16;
+
+
+commit;
+

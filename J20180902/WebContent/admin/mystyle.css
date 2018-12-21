@@ -1,0 +1,36 @@
+﻿@CHARSET "UTF-8";
+*{
+	padding:0px;
+	margin:0px;
+}
+body{
+	
+}
+header{
+	text-align:left;
+	height:60px;
+	margin:10px;
+}
+nav{
+	margin:10px;
+}
+#mainMenu nav ul{
+	background-color:#efefe3;
+	list-style:none;
+	text-align:left;
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+	padding:10px 0;
+}
+#mainMenu nav ul li {
+
+	display: inline;
+	padding:0 10px; letter-spacing:10px;
+}
+#mainMenu nav ul li a{
+	text-decoration:none;
+	color:black;
+}
+#accomMenu nav ul{
+	background-color:#ffdb00;
+}
